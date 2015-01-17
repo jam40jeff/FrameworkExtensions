@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ITask")]
+[assembly: AssemblyTitle("FrameworkExtensions")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MorseCode Software")]
-[assembly: AssemblyProduct("MorseCode ITask")]
+[assembly: AssemblyProduct("MorseCode Framework Extensions")]
 [assembly: AssemblyCopyright("Copyright © MorseCode Software 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

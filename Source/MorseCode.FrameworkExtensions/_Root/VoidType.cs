@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjectExtensionMethods.cs" company="MorseCode Software">
+// <copyright file="VoidType.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -33,24 +33,23 @@
 namespace MorseCode.FrameworkExtensions
 {
     /// <summary>
-    /// Contains extension methods for use with any <see cref="object"/>.
+    /// A class representing a <code>void</code> type which may be used as a generic type parameter.
     /// </summary>
-    public static class ObjectExtensionMethods
+    public sealed class VoidType
     {
-        #region Public Methods and Operators
+        #region Static Fields
 
         /// <summary>
-        /// Safely converts any object to a string, returning <code>null</code> if the object is <code>null</code> or calling the <see cref="object.ToString"/> method on it otherwise.
+        /// The singleton instance of <see cref="VoidType"/>.
         /// </summary>
-        /// <param name="o">
-        /// The object to convert to a string.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/> representation of <paramref name="o"/>.
-        /// </returns>
-        public static string SafeToString(this object o)
+        public static readonly VoidType Value = new VoidType();
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        private VoidType()
         {
-            return o == null ? null : o.ToString();
         }
 
         #endregion
