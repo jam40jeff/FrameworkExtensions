@@ -9,6 +9,9 @@
     <projectUrl>https://github.com/jam40jeff/FrameworkExtensions</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides .NET framework extensions.</description>
+    <dependencies>
+      <dependency id="MorseCode.ITask" version="1.0.14.0" />
+    </dependencies>
   </metadata>
   <files>
     <file src="bin\Release\MorseCode.FrameworkExtensions.dll" target="lib\net45\MorseCode.FrameworkExtensions.dll" />
