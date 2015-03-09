@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ListExtensionMethods.cs" company="MorseCode Software">
+// <copyright file="Unit.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -32,26 +32,53 @@
 
 namespace MorseCode.FrameworkExtensions
 {
-    using System.Collections.Generic;
+    using System;
 
     /// <summary>
-    /// Provides extension methods for working with lists.
+    /// A class representing a unit type (similar to the <code>void</code> keyword) which may be used as a generic type parameter.  This type only has one possible value, <code>null</code>.
+    /// This class is similar to the Unit class in the FSharp.Core assembly.
     /// </summary>
-    public static class ListExtensionMethods
+    [Serializable]
+    public sealed class Unit : IComparable, IComparable<Unit>
     {
-        #region Public Methods and Operators
-
-        /// <summary>
-        /// Sets the contents of the list to be equal to the contents of the specified enumerable.
-        /// </summary>
-        /// <param name="target">The list to modify.</param>
-        /// <param name="source">The source enumerable.</param>
-        /// <typeparam name="T">The type of the items in the collection.</typeparam>
-        public static void SetTo<T>(this List<T> target, IEnumerable<T> source)
+        internal Unit()
         {
-            target.SetTo(source, c => c.Clear(), (t, s) => t.AddRange(s));
+#pragma warning disable 168
+            Unit unit = this;
+#pragma warning restore 168
         }
 
-        #endregion
+        /// <summary>
+        /// Serves as a hash function for a particular type.
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
+        {
+            return obj == null || obj is Unit;
+        }
+
+        int IComparable.CompareTo(object obj)
+        {
+            return 0;
+        }
+
+        int IComparable<Unit>.CompareTo(Unit other)
+        {
+            return 0;
+        }
     }
 }

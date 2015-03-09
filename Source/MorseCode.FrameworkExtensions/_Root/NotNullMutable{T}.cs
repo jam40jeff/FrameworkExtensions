@@ -1,0 +1,121 @@
+﻿#region License
+
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="NotNullMutable{T}.cs" company="MorseCode Software">
+// Copyright (c) 2015 MorseCode Software
+// </copyright>
+// <summary>
+// The MIT License (MIT)
+// 
+// Copyright (c) 2015 MorseCode Software
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+#endregion
+
+namespace MorseCode.FrameworkExtensions
+{
+    using System;
+    using System.Diagnostics.Contracts;
+
+    internal struct NotNullMutable<T> : INotNullMutable<T>
+    {
+        #region Fields
+
+        private T value;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public NotNullMutable(T value)
+        {
+            Contract.Requires(!ReferenceEquals(value, null));
+
+            this.value = value;
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public T Value
+        {
+            get
+            {
+                Contract.Ensures(!ReferenceEquals(Contract.Result<T>(), null));
+
+                if (ReferenceEquals(this.value, null))
+                {
+                    throw new InvalidOperationException("Value cannot be null.");
+                }
+
+                return this.value;
+            }
+
+            set
+            {
+                Contract.Ensures(!ReferenceEquals(this.value, null));
+
+                if (ReferenceEquals(value, null))
+                {
+                    throw new InvalidOperationException("Value cannot be null.");
+                }
+
+                this.value = value;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public static explicit operator NotNullMutable<T>(T value)
+        {
+            Contract.Requires(!ReferenceEquals(value, null));
+
+            return new NotNullMutable<T>(value);
+        }
+
+        public static implicit operator T(NotNullMutable<T> value)
+        {
+            Contract.Ensures(!ReferenceEquals(Contract.Result<T>(), null));
+
+            return value.Value;
+        }
+
+        public override string ToString()
+        {
+            return this.Value.SafeToString() ?? string.Empty;
+        }
+
+        #endregion
+
+        #region Methods
+
+        [ContractInvariantMethod]
+        private void CodeContractsInvariants()
+        {
+            Contract.Invariant(!ReferenceEquals(this.value, null));
+        }
+
+        #endregion
+    }
+}

@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="VoidType.cs" company="MorseCode Software">
+// <copyright file="NotNullMutableInterfaceContract.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -32,24 +32,34 @@
 
 namespace MorseCode.FrameworkExtensions
 {
-    /// <summary>
-    /// A class representing a <code>void</code> type which may be used as a generic type parameter.
-    /// </summary>
-    public sealed class VoidType
+    using System.Diagnostics.Contracts;
+
+    [ContractClassFor(typeof(INotNullMutable<>))]
+    internal abstract class NotNullMutableInterfaceContract<T> : INotNullMutable<T>
     {
-        #region Static Fields
+        #region Explicit Interface Properties
 
-        /// <summary>
-        /// The singleton instance of <see cref="VoidType"/>.
-        /// </summary>
-        public static readonly VoidType Value = new VoidType();
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        private VoidType()
+        T INotNull<T>.Value
         {
+            get
+            {
+                return default(T);
+            }
+        }
+
+        T INotNullMutable<T>.Value
+        {
+            get
+            {
+                Contract.Ensures(!ReferenceEquals(Contract.Result<T>(), null));
+
+                return default(T);
+            }
+
+            set
+            {
+                Contract.Requires(!ReferenceEquals(value, null));
+            }
         }
 
         #endregion

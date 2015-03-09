@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ListExtensionMethods.cs" company="MorseCode Software">
+// <copyright file="NotNullReadOnly{T}.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -32,24 +32,70 @@
 
 namespace MorseCode.FrameworkExtensions
 {
-    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
-    /// <summary>
-    /// Provides extension methods for working with lists.
-    /// </summary>
-    public static class ListExtensionMethods
+    internal struct NotNull<T> : INotNull<T>
     {
+        #region Fields
+
+        private readonly T value;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public NotNull(T value)
+        {
+            Contract.Requires(!ReferenceEquals(value, null));
+
+            this.value = value;
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public T Value
+        {
+            get
+            {
+                Contract.Ensures(!ReferenceEquals(Contract.Result<T>(), null));
+
+                return this.value;
+            }
+        }
+
+        #endregion
+
         #region Public Methods and Operators
 
-        /// <summary>
-        /// Sets the contents of the list to be equal to the contents of the specified enumerable.
-        /// </summary>
-        /// <param name="target">The list to modify.</param>
-        /// <param name="source">The source enumerable.</param>
-        /// <typeparam name="T">The type of the items in the collection.</typeparam>
-        public static void SetTo<T>(this List<T> target, IEnumerable<T> source)
+        public static explicit operator NotNull<T>(T value)
         {
-            target.SetTo(source, c => c.Clear(), (t, s) => t.AddRange(s));
+            Contract.Requires(!ReferenceEquals(value, null));
+
+            return new NotNull<T>(value);
+        }
+
+        public static implicit operator T(NotNull<T> value)
+        {
+            Contract.Ensures(!ReferenceEquals(Contract.Result<T>(), null));
+
+            return value.Value;
+        }
+
+        public override string ToString()
+        {
+            return this.Value.SafeToString() ?? string.Empty;
+        }
+
+        #endregion
+
+        #region Methods
+
+        [ContractInvariantMethod]
+        private void CodeContractsInvariants()
+        {
+            Contract.Invariant(!ReferenceEquals(this.value, null));
         }
 
         #endregion

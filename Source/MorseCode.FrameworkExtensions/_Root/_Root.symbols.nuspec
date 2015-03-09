@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>MorseCode.FrameworkExtensions</id>
+    <version>$version$</version>
+    <title>MorseCode Framework Extensions</title>
+    <authors>MorseCode Software</authors>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/jam40jeff/FrameworkExtensions</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides .NET framework extensions.</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\MorseCode.FrameworkExtensions.dll" target="lib\MorseCode.FrameworkExtensions.dll" />
+    <file src="bin\Release\MorseCode.FrameworkExtensions.pdb" target="lib\MorseCode.FrameworkExtensions.pdb" />
+    <file src="bin\Release\MorseCode.FrameworkExtensions.xml" target="lib\MorseCode.FrameworkExtensions.xml" />
+    <file src="**\*.cs" target="src" />
+  </files>
+</package>

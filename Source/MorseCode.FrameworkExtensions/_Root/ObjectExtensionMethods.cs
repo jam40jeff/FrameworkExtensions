@@ -32,6 +32,8 @@
 
 namespace MorseCode.FrameworkExtensions
 {
+    using System.Diagnostics.Contracts;
+
     /// <summary>
     /// Contains extension methods for use with any <see cref="object"/>.
     /// </summary>

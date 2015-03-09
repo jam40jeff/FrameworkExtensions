@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ListExtensionMethods.cs" company="MorseCode Software">
+// <copyright file="NotNullInterfaceContract.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -32,24 +32,21 @@
 
 namespace MorseCode.FrameworkExtensions
 {
-    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
-    /// <summary>
-    /// Provides extension methods for working with lists.
-    /// </summary>
-    public static class ListExtensionMethods
+    [ContractClassFor(typeof(INotNull<>))]
+    internal abstract class NotNullInterfaceContract<T> : INotNull<T>
     {
-        #region Public Methods and Operators
+        #region Explicit Interface Properties
 
-        /// <summary>
-        /// Sets the contents of the list to be equal to the contents of the specified enumerable.
-        /// </summary>
-        /// <param name="target">The list to modify.</param>
-        /// <param name="source">The source enumerable.</param>
-        /// <typeparam name="T">The type of the items in the collection.</typeparam>
-        public static void SetTo<T>(this List<T> target, IEnumerable<T> source)
+        T INotNull<T>.Value
         {
-            target.SetTo(source, c => c.Clear(), (t, s) => t.AddRange(s));
+            get
+            {
+                Contract.Ensures(!ReferenceEquals(Contract.Result<T>(), null));
+
+                return default(T);
+            }
         }
 
         #endregion

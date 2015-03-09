@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ListExtensionMethods.cs" company="MorseCode Software">
+// <copyright file="INotNullReadable.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -32,25 +32,29 @@
 
 namespace MorseCode.FrameworkExtensions
 {
-    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// Provides extension methods for working with lists.
+    /// An interface representing a immutable object which contains a value which may not be <code>null</code>.
     /// </summary>
-    public static class ListExtensionMethods
+    /// <typeparam name="T">
+    /// The type of the value.
+    /// </typeparam>
+    /// <remarks>
+    /// This interface is implemented internally and should not be implemented by any other class outside of this assembly.
+    /// To obtain an <see cref="INotNull{T}"/> instance, either use the <see cref="NotNullExtensionMethods.ToNotNull{T}"/> extension method,
+    /// or use the <see cref="NotNull.Create{T}"/> factory method.
+    /// </remarks>
+    [ContractClass(typeof(NotNullInterfaceContract<>))]
+    public interface INotNull<out T>
     {
-        #region Public Methods and Operators
+        #region Public Properties
 
         /// <summary>
-        /// Sets the contents of the list to be equal to the contents of the specified enumerable.
+        /// Gets the immutable object's value.
         /// </summary>
-        /// <param name="target">The list to modify.</param>
-        /// <param name="source">The source enumerable.</param>
-        /// <typeparam name="T">The type of the items in the collection.</typeparam>
-        public static void SetTo<T>(this List<T> target, IEnumerable<T> source)
-        {
-            target.SetTo(source, c => c.Clear(), (t, s) => t.AddRange(s));
-        }
+        /// <remarks>The value retrieved will not be <code>null</code>.</remarks>
+        T Value { get; }
 
         #endregion
     }

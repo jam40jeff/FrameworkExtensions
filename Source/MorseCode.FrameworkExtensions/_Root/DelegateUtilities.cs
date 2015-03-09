@@ -55,6 +55,8 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(MethodInfo method) where T : class
         {
+            Contract.Requires(method != null);
+
             return (T)(object)Delegate.CreateDelegate(typeof(T), method);
         }
 
@@ -71,6 +73,8 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(MethodInfo method, bool throwOnBindFailure) where T : class
         {
+            Contract.Requires(method != null);
+
             return (T)(object)Delegate.CreateDelegate(typeof(T), method, throwOnBindFailure);
         }
 
@@ -87,6 +91,8 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(object firstArgument, MethodInfo method) where T : class
         {
+            Contract.Requires(method != null);
+
             return (T)(object)Delegate.CreateDelegate(typeof(T), firstArgument, method);
         }
 
@@ -134,7 +140,7 @@ namespace MorseCode.FrameworkExtensions
         /// <param name="firstArgument">An <see cref="object"/> that is the first argument of the method the delegate represents. For instance methods, it must be compatible with the instance type.</param>
         /// <param name="method">The <see cref="T:System.Reflection.MethodInfo"/> describing the static or instance method the delegate is to represent.</param>
         /// <param name="throwOnBindFailure">true to throw an exception if <paramref name="method"/> cannot be bound; otherwise, false.</param>
-        /// <typeparam name="T">A type representing the type of delegate to create.</typeparam>
+        /// <typeparam name="T">The type of delegate to create.</typeparam>
         /// <returns>A delegate of the specified type that represents the specified static or instance method, or null if <paramref name="throwOnBindFailure"/> is false and the delegate cannot be bound to <paramref name="method"/>.</returns>
         /// <exception cref="T:System.ArgumentNullException"><paramref name="method"/> is null.</exception>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> does not inherit <see cref="T:System.MulticastDelegate"/>.-or-<typeparamref name="T"/> is not a RuntimeType. See Runtime Types in Reflection. -or-<paramref name="method"/> cannot be bound, and <paramref name="throwOnBindFailure"/> is true.-or-<paramref name="method"/> is not a RuntimeMethodInfo. See Runtime Types in Reflection.</exception>
@@ -142,28 +148,79 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(object firstArgument, MethodInfo method, bool throwOnBindFailure) where T : class
         {
+            Contract.Requires(method != null);
+
             return (T)(object)Delegate.CreateDelegate(typeof(T), firstArgument, method, throwOnBindFailure);
         }
 
+        /// <summary>
+        /// Creates a delegate of the specified type that represents the specified instance method to invoke on the specified class instance with the specified case-sensitivity.
+        /// </summary>
+        /// <param name="target">The class instance on which <paramref name="method"/> is invoked.</param>
+        /// <param name="method">The name of the instance method that the delegate is to represent.</param>
+        /// <param name="ignoreCase">A Boolean indicating whether to ignore the case when comparing the name of the method.</param>
+        /// <typeparam name="T">The type of delegate to create.</typeparam>
+        /// <returns>A delegate of the specified type that represents the specified instance method to invoke on the specified class instance.</returns>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is null.-or- <paramref name="method"/> is null.</exception>
+        /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> does not inherit <see cref="T:System.MulticastDelegate"/>.-or-<typeparamref name="T"/> is not a RuntimeType. See Runtime Types in Reflection.-or- <paramref name="method"/> is not an instance method. -or-<paramref name="method"/> cannot be bound, for example because it cannot be found.</exception>
+        /// <exception cref="T:System.MissingMethodException">The Invoke method of <typeparamref name="T"/> is not found.</exception>
+        /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(object target, string method, bool ignoreCase) where T : class
         {
+            Contract.Requires(target != null);
+            Contract.Requires(method != null);
+
             return (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase);
         }
 
-        private static void yo()
-        {
-        }
-
+        /// <summary>
+        /// Creates a delegate of the specified type that represents the specified static method of the specified class, with the specified case-sensitivity.
+        /// </summary>
+        /// <param name="target">The <see cref="T:System.Type"/> representing the class that implements <paramref name="method"/>.</param>
+        /// <param name="method">The name of the static method that the delegate is to represent.</param>
+        /// <param name="ignoreCase">A Boolean indicating whether to ignore the case when comparing the name of the method.</param>
+        /// <typeparam name="T">The type of delegate to create.</typeparam>
+        /// <returns>A delegate of the specified type that represents the specified static method of the specified class.</returns>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is null.-or- <paramref name="method"/> is null.</exception>
+        /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> does not inherit <see cref="T:System.MulticastDelegate"/>.-or- <typeparamref name="T"/> is not a RuntimeType. See Runtime Types in Reflection. -or-<paramref name="target"/> is not a RuntimeType.-or-<paramref name="target"/> is an open generic type. That is, its <see cref="P:System.Type.ContainsGenericParameters"/> property is true.-or-<paramref name="method"/> is not a static method (Shared method in Visual Basic). -or-<paramref name="method"/> cannot be bound, for example because it cannot be found.</exception>
+        /// <exception cref="T:System.MissingMethodException">The Invoke method of <typeparamref name="T"/> is not found.</exception>
+        /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(Type target, string method, bool ignoreCase) where T : class
         {
             return (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase);
         }
 
+        /// <summary>
+        /// Creates a delegate of the specified type that represents the specified instance method to invoke on the specified class instance, with the specified case-sensitivity and the specified behavior on failure to bind.
+        /// </summary>
+        /// <param name="target">The class instance on which <paramref name="method"/> is invoked.</param>
+        /// <param name="method">The name of the instance method that the delegate is to represent.</param>
+        /// <param name="ignoreCase">A Boolean indicating whether to ignore the case when comparing the name of the method.</param>
+        /// <param name="throwOnBindFailure">true to throw an exception if <paramref name="method"/> cannot be bound; otherwise, false.</param>
+        /// <typeparam name="T">The type of delegate to create.</typeparam>
+        /// <returns>A delegate of the specified type that represents the specified instance method to invoke on the specified class instance.</returns>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is null.-or- <paramref name="method"/> is null.</exception>
+        /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> does not inherit <see cref="T:System.MulticastDelegate"/>.-or-<typeparamref name="T"/> is not a RuntimeType. See Runtime Types in Reflection. -or-  <paramref name="method"/> is not an instance method. -or-<paramref name="method"/> cannot be bound, for example because it cannot be found, and <paramref name="throwOnBindFailure"/> is true.</exception>
+        /// <exception cref="T:System.MissingMethodException">The Invoke method of <typeparamref name="T"/> is not found.</exception>
+        /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(object target, string method, bool ignoreCase, bool throwOnBindFailure) where T : class
         {
             return (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase, throwOnBindFailure);
         }
 
+        /// <summary>
+        /// Creates a delegate of the specified type that represents the specified static method of the specified class, with the specified case-sensitivity and the specified behavior on failure to bind.
+        /// </summary>
+        /// <param name="target">The <see cref="T:System.Type"/> representing the class that implements <paramref name="method"/>.</param>
+        /// <param name="method">The name of the static method that the delegate is to represent.</param>
+        /// <param name="ignoreCase">A Boolean indicating whether to ignore the case when comparing the name of the method.</param>
+        /// <param name="throwOnBindFailure">true to throw an exception if <paramref name="method"/> cannot be bound; otherwise, false.</param>
+        /// <typeparam name="T">The type of delegate to create.</typeparam>
+        /// <returns>A delegate of the specified type that represents the specified static method of the specified class.</returns>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is null.-or- <paramref name="method"/> is null.</exception>
+        /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> does not inherit <see cref="T:System.MulticastDelegate"/>.-or- <typeparamref name="T"/> is not a RuntimeType. See Runtime Types in Reflection. -or-<paramref name="target"/> is not a RuntimeType.-or-<paramref name="target"/> is an open generic type. That is, its <see cref="P:System.Type.ContainsGenericParameters"/> property is true.-or-<paramref name="method"/> is not a static method (Shared method in Visual Basic). -or-<paramref name="method"/> cannot be bound, for example because it cannot be found, and <paramref name="throwOnBindFailure"/> is true.</exception>
+        /// <exception cref="T:System.MissingMethodException">The Invoke method of <typeparamref name="T"/> is not found.</exception>
+        /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(Type target, string method, bool ignoreCase, bool throwOnBindFailure) where T : class
         {
             return (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase, throwOnBindFailure);

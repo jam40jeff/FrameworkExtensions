@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ListExtensionMethods.cs" company="MorseCode Software">
+// <copyright file="TaskUtility.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -32,24 +32,38 @@
 
 namespace MorseCode.FrameworkExtensions
 {
-    using System.Collections.Generic;
+    using System;
+    using System.Diagnostics.Contracts;
+    using System.Threading.Tasks;
 
     /// <summary>
-    /// Provides extension methods for working with lists.
+    /// Provides utility methods for the <see cref="Task"/> class.
     /// </summary>
-    public static class ListExtensionMethods
+    public static class TaskUtility
     {
         #region Public Methods and Operators
 
         /// <summary>
-        /// Sets the contents of the list to be equal to the contents of the specified enumerable.
+        /// Executes an asynchronous method without waiting for it to complete and ignoring any unhandled exceptions.
         /// </summary>
-        /// <param name="target">The list to modify.</param>
-        /// <param name="source">The source enumerable.</param>
-        /// <typeparam name="T">The type of the items in the collection.</typeparam>
-        public static void SetTo<T>(this List<T> target, IEnumerable<T> source)
+        /// <param name="task">The async method to execute asynchronously.</param>
+        public static void FireAndForget(Func<Task> task)
         {
-            target.SetTo(source, c => c.Clear(), (t, s) => t.AddRange(s));
+            Contract.Requires(task != null);
+
+            AsyncHelper.FireAndForget(task);
+        }
+
+        /// <summary>
+        /// Executes an asynchronous method without waiting for it to complete.
+        /// </summary>
+        /// <param name="task">The async method to execute asynchronously.</param>
+        /// <param name="handleException">Method to handle exceptions thrown by <paramref name="task"/>.</param>
+        public static void FireAndForget(Func<Task> task, Action<Exception> handleException)
+        {
+            Contract.Requires(task != null);
+
+            AsyncHelper.FireAndForget(task, handleException);
         }
 
         #endregion

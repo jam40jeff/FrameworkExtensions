@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ListExtensionMethods.cs" company="MorseCode Software">
+// <copyright file="NotNull.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -32,24 +32,51 @@
 
 namespace MorseCode.FrameworkExtensions
 {
-    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// Provides extension methods for working with lists.
+    /// Provides factory methods for creating <see cref="INotNull{T}"/> and <see cref="INotNullMutable{T}"/> instances.
     /// </summary>
-    public static class ListExtensionMethods
+    public static class NotNull
     {
         #region Public Methods and Operators
 
         /// <summary>
-        /// Sets the contents of the list to be equal to the contents of the specified enumerable.
+        /// Creates a <see cref="INotNull{T}"/> instance representing an immutable object with a non-null value.
         /// </summary>
-        /// <param name="target">The list to modify.</param>
-        /// <param name="source">The source enumerable.</param>
-        /// <typeparam name="T">The type of the items in the collection.</typeparam>
-        public static void SetTo<T>(this List<T> target, IEnumerable<T> source)
+        /// <param name="value">
+        /// The value of the immutable object.  This value must not be <code>null</code>.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of the value of the immutable object.
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="INotNull{T}"/> instance with value <paramref name="value"/>.
+        /// </returns>
+        public static INotNull<T> Create<T>(T value)
         {
-            target.SetTo(source, c => c.Clear(), (t, s) => t.AddRange(s));
+            Contract.Requires(!ReferenceEquals(value, null));
+
+            return new NotNull<T>(value);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="INotNullMutable{T}"/> instance representing a mutable object with a non-null value.
+        /// </summary>
+        /// <param name="value">
+        /// The value of the mutable object.  This value must not be <code>null</code>.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of the value of the mutable object.
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="INotNullMutable{T}"/> instance with value <paramref name="value"/>.
+        /// </returns>
+        public static INotNullMutable<T> CreateMutable<T>(T value)
+        {
+            Contract.Requires(!ReferenceEquals(value, null));
+
+            return new NotNullMutable<T>(value);
         }
 
         #endregion
