@@ -125,9 +125,9 @@
     <AssemblyOriginatorKeyFile>..\MorseCode.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MorseCode.ITask, Version=1.0.14.0, Culture=neutral, PublicKeyToken=214321fcab92c5da, processorArchitecture=MSIL">
+    <Reference Include="MorseCode.ITask, Version=1.0.20.0, Culture=neutral, PublicKeyToken=214321fcab92c5da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MorseCode.ITask.1.0.14.0\lib\net45\MorseCode.ITask.dll</HintPath>
+      <HintPath>..\packages\MorseCode.ITask.1.0.20.0\lib\net45\MorseCode.ITask.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -170,6 +170,7 @@
       <Link>MorseCode.snk</Link>
     </None>
     <None Include="packages.config" />
+    <None Include="_Root.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
