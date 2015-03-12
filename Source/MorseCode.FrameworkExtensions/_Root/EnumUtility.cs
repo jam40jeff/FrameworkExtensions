@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnumUtilities.cs" company="MorseCode Software">
+// <copyright file="EnumUtility.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -38,7 +38,7 @@ namespace MorseCode.FrameworkExtensions
     /// <summary>
     /// Contains generically typed static methods to be used as replacements for use their counterparts in <see cref="System.Enum"/>.
     /// </summary>
-    public static class EnumUtilities
+    public static class EnumUtility
     {
         #region Public Methods and Operators
 

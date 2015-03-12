@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DelegateUtilities.cs" company="MorseCode Software">
+// <copyright file="DelegateUtility.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -39,7 +39,7 @@ namespace MorseCode.FrameworkExtensions
     /// <summary>
     /// Contains generically typed static methods to be used as replacements for use their counterparts in <see cref="System.Delegate"/>.
     /// </summary>
-    public static class DelegateUtilities
+    public static class DelegateUtility
     {
         #region Public Methods and Operators
 
