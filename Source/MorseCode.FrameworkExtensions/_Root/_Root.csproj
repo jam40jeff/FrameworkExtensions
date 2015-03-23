@@ -11,7 +11,7 @@
     <AssemblyName>MorseCode.FrameworkExtensions</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -117,6 +117,7 @@
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>3</CodeContractsAnalysisWarningLevel>
     <DocumentationFile>bin\Release\MorseCode.FrameworkExtensions.XML</DocumentationFile>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -125,9 +126,9 @@
     <AssemblyOriginatorKeyFile>..\MorseCode.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MorseCode.ITask, Version=1.0.24.0, Culture=neutral, PublicKeyToken=214321fcab92c5da, processorArchitecture=MSIL">
+    <Reference Include="MorseCode.ITask, Version=1.0.27.0, Culture=neutral, PublicKeyToken=214321fcab92c5da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MorseCode.ITask.1.0.24.0\lib\net45\MorseCode.ITask.dll</HintPath>
+      <HintPath>..\packages\MorseCode.ITask.1.0.27.0\lib\net45\MorseCode.ITask.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
