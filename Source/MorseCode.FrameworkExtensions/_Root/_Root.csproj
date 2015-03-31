@@ -141,6 +141,11 @@
   <ItemGroup>
     <Compile Include="AsyncHelper.cs" />
     <Compile Include="CollectionExtensionMethods.cs" />
+    <Compile Include="ToActionExtensionMethod.cs">
+      <DependentUpon>ToActionExtensionMethod.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="DelegateUtility.cs" />
     <Compile Include="EnumerableExtensionMethods.cs" />
     <Compile Include="EnumUtility.cs" />
@@ -158,6 +163,11 @@
     <Compile Include="ObjectExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskUtility.cs" />
+    <Compile Include="ToFuncExtensionMethod.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToFuncExtensionMethod.tt</DependentUpon>
+    </Compile>
     <Compile Include="Unit.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -169,8 +179,21 @@
     <None Include="..\MorseCode.snk">
       <Link>MorseCode.snk</Link>
     </None>
+    <None Include="ToActionExtensionMethod.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ToActionExtensionMethod.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
+    <None Include="TemplateFileManager.ttinclude" />
+    <None Include="ToFuncExtensionMethod.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ToFuncExtensionMethod.cs</LastGenOutput>
+    </None>
+    <None Include="Utilities.ttinclude" />
     <None Include="_Root.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

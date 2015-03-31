@@ -1,0 +1,84 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="Utilities.ttinclude" #><#@ output extension=".cs" #>
+#region License
+
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ToFuncExtensionMethod.cs" company="MorseCode Software">
+// Copyright (c) 2015 MorseCode Software
+// </copyright>
+// <summary>
+// The MIT License (MIT)
+// 
+// Copyright (c) 2015 MorseCode Software
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+#endregion
+
+namespace MorseCode.FrameworkExtensions
+{
+    using System;
+
+    /// <summary>
+    /// Provides an extension method for converting <see cref="Action"/> delegates to <see cref="Func{T}"/> delegates, where <c>T</c> is <see cref="Unit"/>.
+    /// </summary>
+    public static class ToFuncExtensionMethod
+    {
+        #region Public Methods and Operators
+<# Enumerable.Range(0, MaximumNumberOfParameters + 1).ToList().ForEach(n => { #>
+
+        /// <summary>
+        /// Converts the given <see cref="Action<# if(n > 0) { #>{<#= string.Join(",", Enumerable.Range(1, n).Select(i => "T" + i)) #>}<# } #>"/> delegate to a
+        /// <see cref="Func{<#= string.Join(string.Empty, Enumerable.Range(1, n).Select(i => "T" + i + ",")) #>T}"/> delegate,
+        /// where <c>T</c> is <see cref="Unit"/>.
+        /// </summary>
+<# Enumerable.Range(1, n).ToList().ForEach(i => { #>
+        /// <typeparam name="T<#= i #>">
+        /// The type of the <#= GetOrdinalString(i) #> parameter of the delegate.
+        /// </typeparam>
+<# }); #>
+        /// <param name="action">
+        /// The <see cref="Action<# if(n > 0) { #>{<#= string.Join(",", Enumerable.Range(1, n).Select(i => "T" + i)) #>}<# } #>"/> delegate to convert.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="Func{<#= string.Join(string.Empty, Enumerable.Range(1, n).Select(i => "T" + i + ",")) #>T}"/> delegate, where <c>T</c> is <see cref="Unit"/>.
+        /// </returns>
+        public static Func<<#= string.Join(string.Empty, Enumerable.Range(1, n).Select(i => "T" + i + ", ")) #>Unit> ToFunc<# if(n > 0) { #><<#= string.Join(", ", Enumerable.Range(1, n).Select(i => "T" + i)) #>><# } #>(this Action<# if(n > 0) { #><<#= string.Join(", ", Enumerable.Range(1, n).Select(i => "T" + i)) #>><# } #> action)
+        {
+            if (action == null)
+            {
+                return null;
+            }
+
+            return <# if(n == 1) { #><#= GetLetter(1) #><# } else { #>(<#= string.Join(", ", Enumerable.Range(1, n).Select(GetLetter)) #>)<# } #> =>
+                {
+                    action(<#= string.Join(", ", Enumerable.Range(1, n).Select(GetLetter)) #>);
+                    return null;
+                };
+        }
+<# }); #>
+
+        #endregion
+    }
+}

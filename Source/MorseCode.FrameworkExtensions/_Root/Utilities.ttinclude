@@ -1,0 +1,110 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+private const int MaximumNumberOfParameters = 16;
+
+private string GetOrdinalString(int n)
+{
+	switch(n)
+	{
+		case 1:
+			return "first";
+		case 2:
+			return "second";
+		case 3:
+			return "third";
+		case 4:
+			return "fourth";
+		case 5:
+			return "fifth";
+		case 6:
+			return "sixth";
+		case 7:
+			return "seventh";
+		case 8:
+			return "eighth";
+		case 9:
+			return "ninth";
+		case 10:
+			return "tenth";
+		case 11:
+			return "eleventh";
+		case 12:
+			return "twelfth";
+		case 13:
+			return "thirteenth";
+		case 14:
+			return "fourteenth";
+		case 15:
+			return "fifteenth";
+		case 16:
+			return "sixteenth";
+		default:
+			throw new InvalidOperationException("Could not get ordinal string for " + n + ".");
+	}
+}
+
+private string GetLetter(int n)
+{
+	switch(n)
+	{
+		case 1:
+			return "a";
+		case 2:
+			return "b";
+		case 3:
+			return "c";
+		case 4:
+			return "d";
+		case 5:
+			return "e";
+		case 6:
+			return "f";
+		case 7:
+			return "g";
+		case 8:
+			return "h";
+		case 9:
+			return "i";
+		case 10:
+			return "j";
+		case 11:
+			return "k";
+		case 12:
+			return "l";
+		case 13:
+			return "m";
+		case 14:
+			return "n";
+		case 15:
+			return "o";
+		case 16:
+			return "p";
+		case 17:
+			return "q";
+		case 18:
+			return "r";
+		case 19:
+			return "s";
+		case 20:
+			return "t";
+		case 21:
+			return "u";
+		case 22:
+			return "v";
+		case 23:
+			return "w";
+		case 24:
+			return "x";
+		case 25:
+			return "y";
+		case 26:
+			return "z";
+		default:
+			throw new InvalidOperationException("Could not get letter for " + n + ".");
+	}
+}
+#>

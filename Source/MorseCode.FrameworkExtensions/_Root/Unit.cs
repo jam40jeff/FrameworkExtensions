@@ -41,6 +41,11 @@ namespace MorseCode.FrameworkExtensions
     [Serializable]
     public sealed class Unit : IComparable, IComparable<Unit>
     {
+        /// <summary>
+        /// The singleton value for <see cref="Unit"/>, which is <c>null</c>.
+        /// </summary>
+        public static readonly Unit Value = null;
+
         internal Unit()
         {
 #pragma warning disable 168
