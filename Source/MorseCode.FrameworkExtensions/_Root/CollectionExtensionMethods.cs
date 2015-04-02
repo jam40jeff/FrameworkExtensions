@@ -34,6 +34,7 @@ namespace MorseCode.FrameworkExtensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
 
     /// <summary>
@@ -57,6 +58,8 @@ namespace MorseCode.FrameworkExtensions
         /// <typeparam name="T">The type of the items in the collection.</typeparam>
         public static void SetTo<T>(this ICollection<T> target, IEnumerable<T> source)
         {
+            Contract.Requires<ArgumentNullException>(target != null, "target");
+
             target.SetTo(source, c => c.Clear(), (t, s) => s.ForEach(t.Add));
         }
 
@@ -66,6 +69,10 @@ namespace MorseCode.FrameworkExtensions
 
         internal static void SetTo<TCollection, T>(this TCollection target, IEnumerable<T> source, Action<ICollection<T>> clearAction, AddRangeDelegate<TCollection, T> addRangeAction) where TCollection : class, ICollection<T>
         {
+            Contract.Requires<ArgumentNullException>(target != null, "target");
+            Contract.Requires<ArgumentNullException>(clearAction != null, "clearAction");
+            Contract.Requires<ArgumentNullException>(addRangeAction != null, "addRangeAction");
+
             if (ReferenceEquals(source, target))
             {
                 return;
@@ -81,15 +88,7 @@ namespace MorseCode.FrameworkExtensions
 
             if (sourceList.Count < 1)
             {
-                if (target != null)
-                {
-                    clearAction(target);
-                }
-            }
-
-            if (target == null)
-            {
-                throw new InvalidOperationException("Target may not be null if source is not empty.");
+                clearAction(target);
             }
 
             clearAction(target);

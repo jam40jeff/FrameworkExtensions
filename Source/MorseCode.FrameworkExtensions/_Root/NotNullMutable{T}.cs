@@ -47,7 +47,7 @@ namespace MorseCode.FrameworkExtensions
 
         public NotNullMutable(T value)
         {
-            Contract.Requires(!ReferenceEquals(value, null));
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
 
             this.value = value;
         }
@@ -64,7 +64,7 @@ namespace MorseCode.FrameworkExtensions
 
                 if (ReferenceEquals(this.value, null))
                 {
-                    throw new InvalidOperationException("Value cannot be null.");
+                    throw new InvalidOperationException("NotNull instances must be initialized with the constructor taking a non-null value.");
                 }
 
                 return this.value;
@@ -89,7 +89,7 @@ namespace MorseCode.FrameworkExtensions
 
         public static explicit operator NotNullMutable<T>(T value)
         {
-            Contract.Requires(!ReferenceEquals(value, null));
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
 
             return new NotNullMutable<T>(value);
         }
@@ -104,16 +104,6 @@ namespace MorseCode.FrameworkExtensions
         public override string ToString()
         {
             return this.Value.SafeToString() ?? string.Empty;
-        }
-
-        #endregion
-
-        #region Methods
-
-        [ContractInvariantMethod]
-        private void CodeContractsInvariants()
-        {
-            Contract.Invariant(!ReferenceEquals(this.value, null));
         }
 
         #endregion

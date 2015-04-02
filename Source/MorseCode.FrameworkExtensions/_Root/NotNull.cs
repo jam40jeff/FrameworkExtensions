@@ -32,6 +32,7 @@
 
 namespace MorseCode.FrameworkExtensions
 {
+    using System;
     using System.Diagnostics.Contracts;
 
     /// <summary>
@@ -55,7 +56,8 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         public static INotNull<T> Create<T>(T value)
         {
-            Contract.Requires(!ReferenceEquals(value, null));
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
+            Contract.Ensures(Contract.Result<INotNull<T>>() != null);
 
             return new NotNull<T>(value);
         }
@@ -74,7 +76,8 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         public static INotNullMutable<T> CreateMutable<T>(T value)
         {
-            Contract.Requires(!ReferenceEquals(value, null));
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
+            Contract.Ensures(Contract.Result<INotNull<T>>() != null);
 
             return new NotNullMutable<T>(value);
         }

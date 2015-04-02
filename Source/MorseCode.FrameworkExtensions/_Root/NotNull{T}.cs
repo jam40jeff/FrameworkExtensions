@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NotNullReadOnly{T}.cs" company="MorseCode Software">
+// <copyright file="NotNull{T}.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -32,6 +32,7 @@
 
 namespace MorseCode.FrameworkExtensions
 {
+    using System;
     using System.Diagnostics.Contracts;
 
     internal struct NotNull<T> : INotNull<T>
@@ -46,7 +47,7 @@ namespace MorseCode.FrameworkExtensions
 
         public NotNull(T value)
         {
-            Contract.Requires(!ReferenceEquals(value, null));
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
 
             this.value = value;
         }
@@ -61,6 +62,11 @@ namespace MorseCode.FrameworkExtensions
             {
                 Contract.Ensures(!ReferenceEquals(Contract.Result<T>(), null));
 
+                if (ReferenceEquals(this.value, null))
+                {
+                    throw new InvalidOperationException("NotNull instances must be initialized with the constructor taking a non-null value.");
+                }
+
                 return this.value;
             }
         }
@@ -71,7 +77,7 @@ namespace MorseCode.FrameworkExtensions
 
         public static explicit operator NotNull<T>(T value)
         {
-            Contract.Requires(!ReferenceEquals(value, null));
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
 
             return new NotNull<T>(value);
         }
@@ -86,16 +92,6 @@ namespace MorseCode.FrameworkExtensions
         public override string ToString()
         {
             return this.Value.SafeToString() ?? string.Empty;
-        }
-
-        #endregion
-
-        #region Methods
-
-        [ContractInvariantMethod]
-        private void CodeContractsInvariants()
-        {
-            Contract.Invariant(!ReferenceEquals(this.value, null));
         }
 
         #endregion

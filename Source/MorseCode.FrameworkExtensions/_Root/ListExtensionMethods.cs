@@ -32,7 +32,9 @@
 
 namespace MorseCode.FrameworkExtensions
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Provides extension methods for working with lists.
@@ -49,6 +51,8 @@ namespace MorseCode.FrameworkExtensions
         /// <typeparam name="T">The type of the items in the collection.</typeparam>
         public static void SetTo<T>(this List<T> target, IEnumerable<T> source)
         {
+            Contract.Requires<ArgumentNullException>(target != null, "target");
+
             target.SetTo(source, c => c.Clear(), (t, s) => t.AddRange(s));
         }
 

@@ -34,6 +34,7 @@ namespace MorseCode.FrameworkExtensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
 
     /// <summary>
@@ -60,6 +61,9 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         public static IEnumerable<T> FlattenRecursively<T>(this T root, Func<T, IEnumerable<T>> getChildren)
         {
+            Contract.Requires<ArgumentNullException>(getChildren != null, "getChildren");
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
             if (ReferenceEquals(root, null))
             {
                 yield break;
@@ -89,6 +93,9 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         public static IEnumerable<T> FlattenRecursively<T>(this IEnumerable<T> root, Func<T, IEnumerable<T>> getChildren)
         {
+            Contract.Requires<ArgumentNullException>(getChildren != null, "getChildren");
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
             if (root == null)
             {
                 yield break;
@@ -108,6 +115,8 @@ namespace MorseCode.FrameworkExtensions
         /// <returns>Returns an empty <see cref="IEnumerable{T}"/> if <paramref name="enumerable"/> is <code>null</code>.  Otherwise, returns <paramref name="enumerable"/>.</returns>
         public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T> enumerable)
         {
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
             return enumerable ?? new T[0];
         }
 
@@ -119,6 +128,8 @@ namespace MorseCode.FrameworkExtensions
         /// <typeparam name="T">The type of the items in the enumerable.</typeparam>
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
+            Contract.Requires<ArgumentNullException>(action != null, "action");
+
             ForEach(enumerable, (o, i) => action(o));
         }
 
@@ -130,7 +141,9 @@ namespace MorseCode.FrameworkExtensions
         /// <typeparam name="T">The type of the items in the enumerable.</typeparam>
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T, int> action)
         {
-            if (action == null || enumerable == null)
+            Contract.Requires<ArgumentNullException>(action != null, "action");
+
+            if (enumerable == null)
             {
                 return;
             }
@@ -152,6 +165,8 @@ namespace MorseCode.FrameworkExtensions
         /// Otherwise, an enumerable with only <paramref name="item"/> in it will be returned.</returns>
         public static IEnumerable<T> ToEnumerable<T>(this T item) where T : class
         {
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
             if (item == null)
             {
                 return new T[0];
@@ -174,6 +189,8 @@ namespace MorseCode.FrameworkExtensions
         public static IEnumerable<T> ToEnumerableForStruct<T>(this T item, Func<T, bool> excludeFromEnumerable = null)
             where T : struct
         {
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
             excludeFromEnumerable = excludeFromEnumerable ?? (o => o.Equals(default(T)));
 
             if (excludeFromEnumerable(item))
@@ -192,6 +209,8 @@ namespace MorseCode.FrameworkExtensions
         /// <returns>A non-null enumerable instance.  An enumerable with <paramref name="item"/> will always be returned, even if <paramref name="item"/> is <value>null</value>.</returns>
         public static IEnumerable<T> ToSingleEnumerable<T>(this T item)
         {
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
             return new[] { item };
         }
 

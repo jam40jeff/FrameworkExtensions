@@ -55,9 +55,16 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(MethodInfo method) where T : class
         {
-            Contract.Requires(method != null);
+            Contract.Requires<ArgumentNullException>(method != null, "method");
+            Contract.Ensures(Contract.Result<T>() != null);
 
-            return (T)(object)Delegate.CreateDelegate(typeof(T), method);
+            T result = (T)(object)Delegate.CreateDelegate(typeof(T), method);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Delegate.CreateDelegate should not return null.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -73,9 +80,16 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(MethodInfo method, bool throwOnBindFailure) where T : class
         {
-            Contract.Requires(method != null);
+            Contract.Requires<ArgumentNullException>(method != null, "method");
+            Contract.Ensures(Contract.Result<T>() != null || !throwOnBindFailure);
 
-            return (T)(object)Delegate.CreateDelegate(typeof(T), method, throwOnBindFailure);
+            T result = (T)(object)Delegate.CreateDelegate(typeof(T), method, throwOnBindFailure);
+            if (throwOnBindFailure && result == null)
+            {
+                throw new InvalidOperationException("Delegate.CreateDelegate should not return null if throwOnBindFailure is true.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -91,9 +105,16 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(object firstArgument, MethodInfo method) where T : class
         {
-            Contract.Requires(method != null);
+            Contract.Requires<ArgumentNullException>(method != null, "method");
+            Contract.Ensures(Contract.Result<T>() != null);
 
-            return (T)(object)Delegate.CreateDelegate(typeof(T), firstArgument, method);
+            T result = (T)(object)Delegate.CreateDelegate(typeof(T), firstArgument, method);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Delegate.CreateDelegate should not return null.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -109,10 +130,17 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(object target, string method) where T : class
         {
-            Contract.Requires(target != null);
-            Contract.Requires(method != null);
+            Contract.Requires<ArgumentNullException>(target != null, "target");
+            Contract.Requires<ArgumentNullException>(method != null, "method");
+            Contract.Ensures(Contract.Result<T>() != null);
 
-            return (T)(object)Delegate.CreateDelegate(typeof(T), target, method);
+            T result = (T)(object)Delegate.CreateDelegate(typeof(T), target, method);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Delegate.CreateDelegate should not return null.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -128,10 +156,17 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(Type target, string method) where T : class
         {
-            Contract.Requires(target != null);
-            Contract.Requires(method != null);
+            Contract.Requires<ArgumentNullException>(target != null, "target");
+            Contract.Requires<ArgumentNullException>(method != null, "method");
+            Contract.Ensures(Contract.Result<T>() != null);
 
-            return (T)(object)Delegate.CreateDelegate(typeof(T), target, method);
+            T result = (T)(object)Delegate.CreateDelegate(typeof(T), target, method);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Delegate.CreateDelegate should not return null.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -148,9 +183,16 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(object firstArgument, MethodInfo method, bool throwOnBindFailure) where T : class
         {
-            Contract.Requires(method != null);
+            Contract.Requires<ArgumentNullException>(method != null, "method");
+            Contract.Ensures(Contract.Result<T>() != null || !throwOnBindFailure);
 
-            return (T)(object)Delegate.CreateDelegate(typeof(T), firstArgument, method, throwOnBindFailure);
+            T result = (T)(object)Delegate.CreateDelegate(typeof(T), firstArgument, method, throwOnBindFailure);
+            if (throwOnBindFailure && result == null)
+            {
+                throw new InvalidOperationException("Delegate.CreateDelegate should not return null if throwOnBindFailure is true.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -167,10 +209,17 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(object target, string method, bool ignoreCase) where T : class
         {
-            Contract.Requires(target != null);
-            Contract.Requires(method != null);
+            Contract.Requires<ArgumentNullException>(target != null, "target");
+            Contract.Requires<ArgumentNullException>(method != null, "method");
+            Contract.Ensures(Contract.Result<T>() != null);
 
-            return (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase);
+            T result = (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Delegate.CreateDelegate should not return null.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -187,7 +236,17 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(Type target, string method, bool ignoreCase) where T : class
         {
-            return (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase);
+            Contract.Requires<ArgumentNullException>(target != null, "target");
+            Contract.Requires<ArgumentNullException>(method != null, "method");
+            Contract.Ensures(Contract.Result<T>() != null);
+
+            T result = (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Delegate.CreateDelegate should not return null.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -205,7 +264,17 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(object target, string method, bool ignoreCase, bool throwOnBindFailure) where T : class
         {
-            return (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase, throwOnBindFailure);
+            Contract.Requires<ArgumentNullException>(target != null, "target");
+            Contract.Requires<ArgumentNullException>(method != null, "method");
+            Contract.Ensures(Contract.Result<T>() != null || !throwOnBindFailure);
+
+            T result = (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase, throwOnBindFailure);
+            if (throwOnBindFailure && result == null)
+            {
+                throw new InvalidOperationException("Delegate.CreateDelegate should not return null if throwOnBindFailure is true.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -223,7 +292,17 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.MethodAccessException">The caller does not have the permissions necessary to access <paramref name="method"/>.</exception>
         public static T CreateDelegate<T>(Type target, string method, bool ignoreCase, bool throwOnBindFailure) where T : class
         {
-            return (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase, throwOnBindFailure);
+            Contract.Requires<ArgumentNullException>(target != null, "target");
+            Contract.Requires<ArgumentNullException>(method != null, "method");
+            Contract.Ensures(Contract.Result<T>() != null || !throwOnBindFailure);
+
+            T result = (T)(object)Delegate.CreateDelegate(typeof(T), target, method, ignoreCase, throwOnBindFailure);
+            if (throwOnBindFailure && result == null)
+            {
+                throw new InvalidOperationException("Delegate.CreateDelegate should not return null if throwOnBindFailure is true.");
+            }
+
+            return result;
         }
 
         #endregion

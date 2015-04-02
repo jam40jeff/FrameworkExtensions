@@ -62,10 +62,17 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         public static INotNullMutable<T2> Bind<T1, T2>(this INotNull<T1> o, Func<T1, INotNullMutable<T2>> bind)
         {
-            Contract.Requires(!ReferenceEquals(o, null));
-            Contract.Requires(bind != null);
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(o, null), "o");
+            Contract.Requires<ArgumentNullException>(bind != null, "bind");
+            Contract.Ensures(Contract.Result<INotNullMutable<T2>>() != null);
 
-            return bind(o.Value);
+            INotNullMutable<T2> result = bind(o.Value);
+            if (result == null)
+            {
+                throw new ArgumentException("The bind function cannot return null.", "bind");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -88,10 +95,17 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         public static INotNull<T2> Bind<T1, T2>(this INotNull<T1> o, Func<T1, INotNull<T2>> bind)
         {
-            Contract.Requires(!ReferenceEquals(o, null));
-            Contract.Requires(bind != null);
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(o, null), "o");
+            Contract.Requires<ArgumentNullException>(bind != null, "bind");
+            Contract.Ensures(Contract.Result<INotNull<T2>>() != null);
 
-            return bind(o.Value);
+            INotNull<T2> result = bind(o.Value);
+            if (result == null)
+            {
+                throw new ArgumentException("The bind function cannot return null.", "bind");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -114,11 +128,11 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         public static INotNullMutable<T2> SelectMutable<T1, T2>(this INotNull<T1> o, Func<T1, T2> map)
         {
-            Contract.Requires(!ReferenceEquals(o, null));
-            Contract.Requires(map != null);
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(o, null), "o");
+            Contract.Requires<ArgumentNullException>(map != null, "map");
+            Contract.Ensures(Contract.Result<INotNullMutable<T2>>() != null);
 
             T2 mappedValue = map(o.Value);
-
             if (ReferenceEquals(mappedValue, null))
             {
                 throw new ArgumentException("The mapping function cannot return null.", "map");
@@ -153,11 +167,21 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         public static INotNullMutable<T3> SelectMany<T1, T2, T3>(this INotNull<T1> o, Func<T1, INotNullMutable<T2>> bind, Func<T1, T2, T3> select)
         {
-            Contract.Requires(!ReferenceEquals(o, null));
-            Contract.Requires(bind != null);
-            Contract.Requires(select != null);
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(o, null), "o");
+            Contract.Requires<ArgumentNullException>(bind != null, "bind");
+            Contract.Requires<ArgumentNullException>(select != null, "select");
+            Contract.Ensures(Contract.Result<INotNullMutable<T3>>() != null);
 
-            return o.Bind(aValue => bind(aValue).Bind(bValue => select(aValue, bValue).ToNotNullMutable()));
+            return o.Bind(aValue =>
+            {
+                INotNullMutable<T2> b = bind(aValue);
+                if (b == null)
+                {
+                    throw new ArgumentException("The bind function cannot return null.", "bind");
+                }
+
+                return b.Bind(bValue => select(aValue, bValue).ToNotNullMutable());
+            });
         }
 
         /// <summary>
@@ -186,11 +210,21 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         public static INotNull<T3> SelectMany<T1, T2, T3>(this INotNull<T1> o, Func<T1, INotNull<T2>> bind, Func<T1, T2, T3> select)
         {
-            Contract.Requires(!ReferenceEquals(o, null));
-            Contract.Requires(bind != null);
-            Contract.Requires(select != null);
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(o, null), "o");
+            Contract.Requires<ArgumentNullException>(bind != null, "bind");
+            Contract.Requires<ArgumentNullException>(select != null, "select");
+            Contract.Ensures(Contract.Result<INotNull<T3>>() != null);
 
-            return o.Bind(aValue => bind(aValue).Bind(bValue => select(aValue, bValue).ToNotNullMutable()));
+            return o.Bind(aValue =>
+                {
+                    INotNull<T2> b = bind(aValue);
+                    if (b == null)
+                    {
+                        throw new ArgumentException("The bind function cannot return null.", "bind");
+                    }
+
+                    return b.Bind(bValue => select(aValue, bValue).ToNotNull());
+                });
         }
 
         /// <summary>
@@ -213,11 +247,11 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         public static INotNull<T2> Select<T1, T2>(this INotNull<T1> o, Func<T1, T2> map)
         {
-            Contract.Requires(!ReferenceEquals(o, null));
-            Contract.Requires(map != null);
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(o, null), "o");
+            Contract.Requires<ArgumentNullException>(map != null, "map");
+            Contract.Ensures(Contract.Result<INotNull<T2>>() != null);
 
             T2 mappedValue = map(o.Value);
-
             if (ReferenceEquals(mappedValue, null))
             {
                 throw new ArgumentException("The mapping function cannot return null.", "map");
@@ -241,7 +275,8 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="ArgumentNullException"><paramref name="o"/> is null.</exception>
         public static INotNullMutable<T> ToNotNullMutable<T>(this T o)
         {
-            Contract.Requires(!ReferenceEquals(o, null));
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(o, null), "o");
+            Contract.Ensures(Contract.Result<INotNullMutable<T>>() != null);
 
             return new NotNullMutable<T>(o);
         }
@@ -261,7 +296,8 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="ArgumentNullException"><paramref name="o"/> is null.</exception>
         public static INotNull<T> ToNotNull<T>(this T o)
         {
-            Contract.Requires(!ReferenceEquals(o, null));
+            Contract.Requires<ArgumentNullException>(!ReferenceEquals(o, null), "o");
+            Contract.Ensures(Contract.Result<INotNull<T>>() != null);
 
             return new NotNull<T>(o);
         }

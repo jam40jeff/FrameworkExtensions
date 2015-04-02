@@ -32,6 +32,7 @@
 
 namespace MorseCode.FrameworkExtensions
 {
+    using System;
     using System.Diagnostics.Contracts;
 
     [ContractClassFor(typeof(INotNullMutable<>))]
@@ -58,7 +59,7 @@ namespace MorseCode.FrameworkExtensions
 
             set
             {
-                Contract.Requires(!ReferenceEquals(value, null));
+                Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
             }
         }
 

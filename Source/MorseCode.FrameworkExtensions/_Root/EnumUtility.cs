@@ -54,6 +54,8 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.</exception>
         public static T[] GetValues<T>() where T : struct
         {
+            Contract.Ensures(Contract.Result<T[]>() != null);
+
             return (T[])Enum.GetValues(typeof(T));
         }
 
@@ -73,7 +75,7 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.OverflowException"><paramref name="value"/> is outside the range of the underlying type of <typeparamref name="T"/>.</exception>
         public static T Parse<T>(string value) where T : struct
         {
-            Contract.Requires(value != null);
+            Contract.Requires<ArgumentNullException>(value != null, "value");
 
             return (T)Enum.Parse(typeof(T), value);
         }
@@ -98,7 +100,7 @@ namespace MorseCode.FrameworkExtensions
         /// <exception cref="T:System.OverflowException"><paramref name="value"/> is outside the range of the underlying type of <typeparamref name="T"/>.</exception>
         public static T Parse<T>(string value, bool ignoreCase) where T : struct
         {
-            Contract.Requires(value != null);
+            Contract.Requires<ArgumentNullException>(value != null, "value");
 
             return (T)Enum.Parse(typeof(T), value, ignoreCase);
         }

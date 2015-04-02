@@ -50,7 +50,7 @@ namespace MorseCode.FrameworkExtensions
         /// <param name="createTask">A function that creates and returns the <see cref="Task"/> to execute asynchronously.</param>
         public static void FireAndForget(Func<Task> createTask)
         {
-            Contract.Requires(createTask != null);
+            Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
             AsyncHelper.FireAndForget(createTask);
         }
@@ -61,7 +61,7 @@ namespace MorseCode.FrameworkExtensions
         /// <param name="createTask">A function that creates and returns the <see cref="ITask"/> to execute asynchronously.</param>
         public static void FireAndForget(Func<ITask> createTask)
         {
-            Contract.Requires(createTask != null);
+            Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
             AsyncHelper.FireAndForget(createTask().AsTask);
         }
@@ -73,7 +73,7 @@ namespace MorseCode.FrameworkExtensions
         /// <param name="handleException">Method to handle exceptions thrown by the task created by <paramref name="createTask"/>.</param>
         public static void FireAndForget(Func<Task> createTask, Action<Exception> handleException)
         {
-            Contract.Requires(createTask != null);
+            Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
             AsyncHelper.FireAndForget(createTask, handleException);
         }
@@ -85,7 +85,7 @@ namespace MorseCode.FrameworkExtensions
         /// <param name="handleException">Method to handle exceptions thrown by the task created by <paramref name="createTask"/>.</param>
         public static void FireAndForget(Func<ITask> createTask, Action<Exception> handleException)
         {
-            Contract.Requires(createTask != null);
+            Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
             AsyncHelper.FireAndForget(createTask().AsTask, handleException);
         }
@@ -96,7 +96,7 @@ namespace MorseCode.FrameworkExtensions
         /// <param name="createTask">A function that creates and returns the <see cref="Task"/> to execute asynchronously.</param>
         public static void SafelyRunSynchronously(Func<Task> createTask)
         {
-            Contract.Requires(createTask != null);
+            Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
             using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
             {
@@ -110,7 +110,7 @@ namespace MorseCode.FrameworkExtensions
         /// <param name="createTask">A function that creates and returns the <see cref="ITask"/> to execute asynchronously.</param>
         public static void SafelyRunSynchronously(Func<ITask> createTask)
         {
-            Contract.Requires(createTask != null);
+            Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
             using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
             {
@@ -126,7 +126,7 @@ namespace MorseCode.FrameworkExtensions
         /// <returns>The result of the task created by <paramref name="createTask"/>.</returns>
         public static T SafelyRunSynchronously<T>(Func<Task<T>> createTask)
         {
-            Contract.Requires(createTask != null);
+            Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
             T result = default(T);
             using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
@@ -145,7 +145,7 @@ namespace MorseCode.FrameworkExtensions
         /// <returns>The result of the task created by <paramref name="createTask"/>.</returns>
         public static T SafelyRunSynchronously<T>(Func<ITask<T>> createTask)
         {
-            Contract.Requires(createTask != null);
+            Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
             T result = default(T);
             using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
