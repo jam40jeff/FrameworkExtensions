@@ -100,7 +100,13 @@ namespace MorseCode.FrameworkExtensions
 
             using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
             {
-                asyncBridge.Run(createTask());
+                Task task = createTask();
+                if (task == null)
+                {
+                    throw new InvalidOperationException("The createTask function may not return null.");
+                }
+
+                asyncBridge.Run(task);
             }
         }
 
@@ -114,7 +120,13 @@ namespace MorseCode.FrameworkExtensions
 
             using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
             {
-                asyncBridge.Run(createTask().AsTask());
+                ITask task = createTask();
+                if (task == null)
+                {
+                    throw new InvalidOperationException("The createTask function may not return null.");
+                }
+
+                asyncBridge.Run(task.AsTask());
             }
         }
 
@@ -131,7 +143,13 @@ namespace MorseCode.FrameworkExtensions
             T result = default(T);
             using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
             {
-                asyncBridge.Run(createTask(), r => result = r);
+                Task<T> task = createTask();
+                if (task == null)
+                {
+                    throw new InvalidOperationException("The createTask function may not return null.");
+                }
+
+                asyncBridge.Run(task, r => result = r);
             }
 
             return result;
@@ -150,7 +168,13 @@ namespace MorseCode.FrameworkExtensions
             T result = default(T);
             using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
             {
-                asyncBridge.Run(createTask().AsTask(), r => result = r);
+                ITask<T> task = createTask();
+                if (task == null)
+                {
+                    throw new InvalidOperationException("The createTask function may not return null.");
+                }
+
+                asyncBridge.Run(task.AsTask(), r => result = r);
             }
 
             return result;

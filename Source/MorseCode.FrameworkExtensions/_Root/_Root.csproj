@@ -127,9 +127,9 @@
     <AssemblyOriginatorKeyFile>..\MorseCode.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MorseCode.ITask, Version=1.0.29.0, Culture=neutral, PublicKeyToken=214321fcab92c5da, processorArchitecture=MSIL">
+    <Reference Include="MorseCode.ITask, Version=1.0.33.0, Culture=neutral, PublicKeyToken=214321fcab92c5da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MorseCode.ITask.1.0.29.0\lib\net45\MorseCode.ITask.dll</HintPath>
+      <HintPath>..\packages\MorseCode.ITask.1.0.33.0\lib\net45\MorseCode.ITask.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -180,11 +180,11 @@
     <None Include="..\MorseCode.snk">
       <Link>MorseCode.snk</Link>
     </None>
+    <None Include="packages.config" />
     <None Include="ToActionExtensionMethod.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ToActionExtensionMethod.cs</LastGenOutput>
     </None>
-    <None Include="packages.config" />
     <None Include="TemplateFileManager.ttinclude" />
     <None Include="ToFuncExtensionMethod.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
