@@ -30,7 +30,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
-namespace Tests
+namespace MorseCode.FrameworkExtensions.Tests
 {
     using MorseCode.FrameworkExtensions;
 

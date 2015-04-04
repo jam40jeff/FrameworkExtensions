@@ -127,9 +127,9 @@
     <AssemblyOriginatorKeyFile>..\MorseCode.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MorseCode.ITask, Version=1.0.33.0, Culture=neutral, PublicKeyToken=214321fcab92c5da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MorseCode.ITask.1.0.33.0\lib\net45\MorseCode.ITask.dll</HintPath>
+    <Reference Include="MorseCode.ITask, Version=1.0.56.0, Culture=neutral, PublicKeyToken=214321fcab92c5da, processorArchitecture=MSIL">
+      <HintPath>..\packages\MorseCode.ITask.1.0.56.0\lib\net45\MorseCode.ITask.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
