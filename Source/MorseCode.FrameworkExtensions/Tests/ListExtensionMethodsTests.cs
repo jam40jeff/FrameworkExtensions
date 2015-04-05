@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjectExtensionMethods.cs" company="MorseCode Software">
+// <copyright file="ListExtensionMethodsTests.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -30,38 +30,57 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
-namespace MorseCode.FrameworkExtensions
+namespace MorseCode.FrameworkExtensions.Tests
 {
-    /// <summary>
-    /// Contains extension methods for use with any <see cref="object"/>.
-    /// </summary>
-    public static class ObjectExtensionMethods
+    using System.Collections.Generic;
+
+    using NUnit.Framework;
+
+    [TestFixture]
+    public class ListExtensionMethodsTests
     {
         #region Public Methods and Operators
 
-        /// <summary>
-        /// Implicitly converts an object to type <typeparamref name="T"/>.
-        /// </summary>
-        /// <param name="o">The object to convert.</param>
-        /// <typeparam name="T">The type to which to convert.</typeparam>
-        /// <returns>The object as type <typeparamref name="T"/>.</returns>
-        public static T ImplicitConvert<T>(this T o)
+        [Test]
+        public void SetTo()
         {
-            return o;
+            List<int> target = new List<int> { 5, 6, 7 };
+            target.SetTo(new[] { 1, 2 });
+
+            Assert.IsNotNull(target);
+            Assert.AreEqual(2, target.Count);
+            Assert.AreEqual(1, target[0]);
+            Assert.AreEqual(2, target[1]);
         }
 
-        /// <summary>
-        /// Safely converts any object to a string, returning <code>null</code> if the object is <code>null</code> or calling the <see cref="object.ToString"/> method on it otherwise.
-        /// </summary>
-        /// <param name="o">
-        /// The object to convert to a string.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/> representation of <paramref name="o"/>.
-        /// </returns>
-        public static string SafeToString(this object o)
+        [Test]
+        public void SetToEmpty()
         {
-            return o == null ? null : o.ToString();
+            List<int> target = new List<int> { 5, 6, 7 };
+            target.SetTo(new int[0]);
+
+            Assert.IsNotNull(target);
+            Assert.AreEqual(0, target.Count);
+        }
+
+        [Test]
+        public void SetToNull()
+        {
+            List<int> target = new List<int> { 5, 6, 7 };
+            target.SetTo(null);
+
+            Assert.IsNotNull(target);
+            Assert.AreEqual(0, target.Count);
+        }
+
+        [Test]
+        public void SetToSame()
+        {
+            List<int> target = new List<int> { 5, 6, 7 };
+            List<int> source = target;
+            target.SetTo(source);
+
+            Assert.AreSame(source, target);
         }
 
         #endregion

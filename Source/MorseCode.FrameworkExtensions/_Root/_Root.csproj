@@ -150,7 +150,6 @@
     <Compile Include="DelegateUtility.cs" />
     <Compile Include="EnumerableExtensionMethods.cs" />
     <Compile Include="EnumUtility.cs" />
-    <Compile Include="ActionExtensionMethods.cs" />
     <Compile Include="INotNullMutable{T}.cs" />
     <Compile Include="INotNull{T}.cs" />
     <Compile Include="LambdaUtility.cs" />

@@ -32,13 +32,30 @@
 
 namespace MorseCode.FrameworkExtensions.Tests
 {
-    using System.Globalization;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class EnumUtilityTests
     {
+        #region Enums
+
+        private enum TestEnum
+        {
+            First,
+
+            Second,
+
+            Third,
+
+            Fourth,
+
+            Fifth
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         [Test]
         public void GetValues()
         {
@@ -78,6 +95,14 @@ namespace MorseCode.FrameworkExtensions.Tests
         }
 
         [Test]
+        public void ToObjectInt16()
+        {
+            TestEnum value = EnumUtility.ToObject<TestEnum>((short)TestEnum.Second);
+
+            Assert.AreEqual(TestEnum.Second, value);
+        }
+
+        [Test]
         public void ToObjectInt32()
         {
             TestEnum value = EnumUtility.ToObject<TestEnum>((int)TestEnum.Fifth);
@@ -85,13 +110,54 @@ namespace MorseCode.FrameworkExtensions.Tests
             Assert.AreEqual(TestEnum.Fifth, value);
         }
 
-        private enum TestEnum
+        [Test]
+        public void ToObjectInt64()
         {
-            First,
-            Second,
-            Third,
-            Fourth,
-            Fifth
+            TestEnum value = EnumUtility.ToObject<TestEnum>((long)TestEnum.First);
+
+            Assert.AreEqual(TestEnum.First, value);
         }
+
+        [Test]
+        public void ToObjectObject()
+        {
+            TestEnum value = EnumUtility.ToObject<TestEnum>(TestEnum.Third);
+
+            Assert.AreEqual(TestEnum.Third, value);
+        }
+
+        [Test]
+        public void ToObjectSByte()
+        {
+            TestEnum value = EnumUtility.ToObject<TestEnum>((sbyte)TestEnum.Fourth);
+
+            Assert.AreEqual(TestEnum.Fourth, value);
+        }
+
+        [Test]
+        public void ToObjectUInt16()
+        {
+            TestEnum value = EnumUtility.ToObject<TestEnum>((ushort)TestEnum.Third);
+
+            Assert.AreEqual(TestEnum.Third, value);
+        }
+
+        [Test]
+        public void ToObjectUInt32()
+        {
+            TestEnum value = EnumUtility.ToObject<TestEnum>((uint)TestEnum.Fifth);
+
+            Assert.AreEqual(TestEnum.Fifth, value);
+        }
+
+        [Test]
+        public void ToObjectUInt64()
+        {
+            TestEnum value = EnumUtility.ToObject<TestEnum>((ulong)TestEnum.First);
+
+            Assert.AreEqual(TestEnum.First, value);
+        }
+
+        #endregion
     }
 }

@@ -42,6 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionExtensionMethodsTests.cs" />
+    <Compile Include="DelegateUtilityTests.cs" />
+    <Compile Include="EnumerableExtensionMethodsTests.cs" />
+    <Compile Include="ListExtensionMethodsTests.cs" />
+    <Compile Include="ToActionExtensionMethodsTests.cs">
+      <DependentUpon>ToActionExtensionMethodsTests.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ToFuncExtensionMethodsTests.cs">
+      <DependentUpon>ToFuncExtensionMethodsTests.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="EnumUtilityTests.cs" />
     <Compile Include="LambdaUtilityTests.cs">
       <AutoGen>True</AutoGen>
@@ -51,6 +65,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ToActionExtensionMethodsTests.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ToActionExtensionMethodsTests.cs</LastGenOutput>
+    </None>
+    <None Include="ToFuncExtensionMethodsTests.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ToFuncExtensionMethodsTests.cs</LastGenOutput>
+    </None>
     <None Include="LambdaUtilityTests.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LambdaUtilityTests.cs</LastGenOutput>

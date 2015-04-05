@@ -60,7 +60,14 @@ namespace MorseCode.FrameworkExtensions
         {
             Contract.Requires<ArgumentNullException>(target != null, "target");
 
-            target.SetTo(source, c => c.Clear(), (t, s) => s.ForEach(t.Add));
+            if (target is List<T>)
+            {
+                ((List<T>)target).SetTo(source);
+            }
+            else
+            {
+                target.SetTo(source, c => c.Clear(), (t, s) => s.ForEach(t.Add));
+            }
         }
 
         #endregion

@@ -8,7 +8,7 @@
 #region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LambdaUtilityTests.cs" company="MorseCode Software">
+// <copyright file="ToFuncExtensionMethodsTests.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -39,50 +39,49 @@
 
 namespace MorseCode.FrameworkExtensions.Tests
 {
+    using System;
+
     using MorseCode.FrameworkExtensions;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class LambdaUtilityTests
+    public class ToFuncExtensionMethodsTests
     {
         #region Public Methods and Operators
 <# Enumerable.Range(0, 17).ToList().ForEach(n => { #>
 
         [Test]
-        public void TestActionWith<#= n #>ParametersWithAnonymousType()
+        public void ActionWith<#= n #>Parameters()
         {
 <# Enumerable.Range(1, n).ToList().ForEach(i => { #>
             const <#= GetTypeStrings(n)[i - 1] #> Value<#= i #> = <#= GetValueForType(i, GetTypeStrings(n)[i - 1]) #>;
 <# }); #>
-            <#= n > 0 ? string.Empty : "const " #>int <#= n > 0 ? "i" : "I" #>d = 0;
-<# Enumerable.Range(1, n).ToList().ForEach(i => { #>
-            <#= GetTypeStrings(n)[i - 1] #> value<#= i #> = default(<#= GetTypeStrings(n)[i - 1] #>);
+            int id = -1;
+<# Enumerable.Range(0, n).ToList().ForEach(i => { #>
+            <#= GetTypeStrings(n)[i] #> value<#= i + 1 #> = default(<#= GetTypeStrings(n)[i] #>);
 <# }); #>
-            var action = LambdaUtility.TypeLambda((<#= string.Join(", ", Enumerable.Range(1, n).Select(i => GetTypeStrings(n)[i - 1] + " " + GetLetter(i))) #>) => { <#= n > 0 ? ("id = " + n + ";" + string.Join(string.Empty, Enumerable.Range(1, n).Select(i => " value" + i + " = " + GetLetter(i) + ";")) + " ") : string.Empty #>});
-            action(<#= string.Join(", ", Enumerable.Range(1, n).Select(i => "Value" + i)) #>);
+            Action<#= n > 0 ? "<" : string.Empty #><#= string.Join(", ", Enumerable.Range(1, n).Select(i => GetTypeStrings(n)[i - 1])) #><#= n > 0 ? ">" : string.Empty #> action = <#= n == 1 ? string.Empty : "(" #><#= string.Join(", ", Enumerable.Range(1, n).Select(i => GetLetter(i))) #><#= n == 1 ? string.Empty : ")" #> => <#= n > 0 ? "{ " : string.Empty #>id = <#= n + string.Join(string.Empty, Enumerable.Range(1, n).Select(i => "; value" + i + " = " + GetLetter(i))) + (n > 0 ? "; }" : string.Empty) #>;
+			Func<<#= string.Join(string.Empty, Enumerable.Range(1, n).Select(i => GetTypeStrings(n)[i - 1] + ", ")) #>Unit> func = action.ToFunc();
 
-            Assert.AreEqual(<#= n #>, <#= n > 0 ? "i" : "I" #>d);
-<# Enumerable.Range(1, n).ToList().ForEach(i => { #>
-            Assert.AreEqual(Value<#= i #>, value<#= i #>);
+			Assert.IsNotNull(func);
+
+			func(<#= string.Join(", ", Enumerable.Range(1, n).Select(i => "Value" + i)) #>);
+
+            Assert.AreEqual(<#= n #>, id);
+<# Enumerable.Range(0, n).ToList().ForEach(i => { #>
+            Assert.AreEqual(Value<#= i + 1 #>, value<#= i + 1 #>);
 <# }); #>
         }
 <# }); #>
 <# Enumerable.Range(0, 17).ToList().ForEach(n => { #>
 
         [Test]
-        public void TestFuncWith<#= n #>ParametersWithAnonymousType()
+        public void NullActionWith<#= n #>Parameters()
         {
-<# Enumerable.Range(1, n).ToList().ForEach(i => { #>
-            const <#= GetTypeStrings(n)[i - 1] #> Value<#= i #> = <#= GetValueForType(i, GetTypeStrings(n)[i - 1]) #>;
-<# }); #>
-            var func = LambdaUtility.TypeLambda((<#= string.Join(", ", Enumerable.Range(1, n).Select(i => GetTypeStrings(n)[i - 1] + " " + GetLetter(i))) #>) => new { Id = <#= n + string.Join(string.Empty, Enumerable.Range(1, n).Select(i => ", " + GetLetter(i).ToUpperInvariant() + " = " + GetLetter(i))) #> });
-            var result = func(<#= string.Join(", ", Enumerable.Range(1, n).Select(i => "Value" + i)) #>);
+			Func<<#= string.Join(string.Empty, Enumerable.Range(1, n).Select(i => GetTypeStrings(n)[i - 1] + ", ")) #>Unit> func = ((Action<#= n > 0 ? "<" : string.Empty #><#= string.Join(", ", Enumerable.Range(1, n).Select(i => GetTypeStrings(n)[i - 1])) #><#= n > 0 ? ">" : string.Empty #>)null).ToFunc();
 
-            Assert.AreEqual(<#= n #>, result.Id);
-<# Enumerable.Range(1, n).ToList().ForEach(i => { #>
-            Assert.AreEqual(Value<#= i #>, result.<#= GetLetter(i).ToUpperInvariant() #>);
-<# }); #>
+			Assert.IsNull(func);
         }
 <# }); #>
 
