@@ -45,6 +45,19 @@ namespace MorseCode.FrameworkExtensions
         #region Public Methods and Operators
 
         /// <summary>
+        /// Returns an empty enumerable if the original enumerable is <code>null</code>.  Otherwise, returns the original enumerable.
+        /// </summary>
+        /// <param name="enumerable">The original enumerable.</param>
+        /// <typeparam name="T">The type of the items in the enumerable.</typeparam>
+        /// <returns>Returns an empty <see cref="IEnumerable{T}"/> if <paramref name="enumerable"/> is <code>null</code>.  Otherwise, returns <paramref name="enumerable"/>.</returns>
+        public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T> enumerable)
+        {
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
+            return enumerable ?? new T[0];
+        }
+
+        /// <summary>
         /// Recursively flatten a hierarchical item.
         /// </summary>
         /// <param name="root">
@@ -105,19 +118,6 @@ namespace MorseCode.FrameworkExtensions
             {
                 yield return child;
             }
-        }
-
-        /// <summary>
-        /// Returns an empty enumerable if the original enumerable is <code>null</code>.  Otherwise, returns the original enumerable.
-        /// </summary>
-        /// <param name="enumerable">The original enumerable.</param>
-        /// <typeparam name="T">The type of the items in the enumerable.</typeparam>
-        /// <returns>Returns an empty <see cref="IEnumerable{T}"/> if <paramref name="enumerable"/> is <code>null</code>.  Otherwise, returns <paramref name="enumerable"/>.</returns>
-        public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T> enumerable)
-        {
-            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
-
-            return enumerable ?? new T[0];
         }
 
         /// <summary>
