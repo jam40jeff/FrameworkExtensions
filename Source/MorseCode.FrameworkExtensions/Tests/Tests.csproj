@@ -42,18 +42,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LamdbaUtilityTests.cs" />
+    <Compile Include="EnumUtilityTests.cs" />
+    <Compile Include="LambdaUtilityTests.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LambdaUtilityTests.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LambdaUtilityTests.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LambdaUtilityTests.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
+    <None Include="Utilities.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\_Root\_Root.csproj">
       <Project>{10ACE104-0A3B-4094-A284-99F35DF8E5C4}</Project>
       <Name>_Root</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

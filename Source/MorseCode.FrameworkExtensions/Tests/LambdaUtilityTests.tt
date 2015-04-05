@@ -1,0 +1,107 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ include file="Utilities.ttinclude" #><#@ output extension=".cs" #>
+#region License
+
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LambdaUtilityTests.cs" company="MorseCode Software">
+// Copyright (c) 2015 MorseCode Software
+// </copyright>
+// <summary>
+// The MIT License (MIT)
+// 
+// Copyright (c) 2015 MorseCode Software
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+#endregion
+
+namespace MorseCode.FrameworkExtensions.Tests
+{
+    using MorseCode.FrameworkExtensions;
+
+    using NUnit.Framework;
+
+    [TestFixture]
+    public class LambdaUtilityTests
+    {
+        #region Public Methods and Operators
+<# Enumerable.Range(0, 17).ToList().ForEach(n => { #>
+
+        [Test]
+        public void TestActionWith<#= n #>ParametersWithAnonymousType()
+        {
+<# Enumerable.Range(0, n).ToList().ForEach(i => { #>
+            const <#= GetTypeStrings(n)[i] #> Value<#= i + 1 #> = <#= GetValueForType(i + 1, GetTypeStrings(n)[i]) #>;
+<# }); #>
+            int id = -1;
+<# Enumerable.Range(0, n).ToList().ForEach(i => { #>
+            <#= GetTypeStrings(n)[i] #> value<#= i + 1 #> = default(<#= GetTypeStrings(n)[i] #>);
+<# }); #>
+            var action = LambdaUtility.TypeLambda((<#= string.Join(", ", Enumerable.Range(0, n).Select(i => GetTypeStrings(n)[i] + " " + GetLetter(i + 1))) #>) => <#= n > 0 ? "{ " : string.Empty #>id = <#= n + (n > 0 ? ";" : string.Empty) + string.Join(string.Empty, Enumerable.Range(0, n).Select(i => " value" + (i + 1) + " = " + GetLetter(i + 1) + ";")) #><#= n > 0 ? " }" : string.Empty #>);
+            action(<#= string.Join(", ", Enumerable.Range(0, n).Select(i => "Value" + (i + 1))) #>);
+            Assert.AreEqual(<#= n #>, id);
+<# Enumerable.Range(0, n).ToList().ForEach(i => { #>
+            Assert.AreEqual(Value<#= i + 1 #>, value<#= i + 1 #>);
+<# }); #>
+        }
+<# }); #>
+<# Enumerable.Range(0, 17).ToList().ForEach(n => { #>
+
+        [Test]
+        public void TestFuncWith<#= n #>ParametersWithAnonymousType()
+        {
+<# Enumerable.Range(0, n).ToList().ForEach(i => { #>
+            const <#= GetTypeStrings(n)[i] #> Value<#= i + 1 #> = <#= GetValueForType(i + 1, GetTypeStrings(n)[i]) #>;
+<# }); #>
+            var func = LambdaUtility.TypeLambda((<#= string.Join(", ", Enumerable.Range(0, n).Select(i => GetTypeStrings(n)[i] + " " + GetLetter(i + 1))) #>) => new { Id = <#= n + string.Join(string.Empty, Enumerable.Range(0, n).Select(i => ", " + GetLetter(i + 1).ToUpperInvariant() + " = " + GetLetter(i + 1))) #> });
+            var result = func(<#= string.Join(", ", Enumerable.Range(0, n).Select(i => "Value" + (i + 1))) #>);
+            Assert.AreEqual(<#= n #>, result.Id);
+<# Enumerable.Range(0, n).ToList().ForEach(i => { #>
+            Assert.AreEqual(Value<#= i + 1 #>, result.<#= GetLetter(i + 1).ToUpperInvariant() #>);
+<# }); #>
+        }
+<# }); #>
+
+        #endregion
+    }
+}
+<#+
+private IReadOnlyList<string> GetTypeStrings(int numberOfParameters)
+{
+	string[] types = new[] { "int", "string", "double", "long" };
+
+	return Enumerable.Range(0, numberOfParameters).Select(n => types[n % types.Length]).ToList();
+}
+
+private string GetValueForType(int parameterNumber, string type)
+{
+	if(type == "string")
+	{
+		return "\"" + parameterNumber.ToString(CultureInfo.InvariantCulture) + "\"";
+	}
+
+	return parameterNumber.ToString(CultureInfo.InvariantCulture);
+}
+#>

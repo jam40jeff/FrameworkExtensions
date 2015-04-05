@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LamdbaUtilityTests.cs" company="MorseCode Software">
+// <copyright file="EnumUtilityTests.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -32,28 +32,66 @@
 
 namespace MorseCode.FrameworkExtensions.Tests
 {
-    using MorseCode.FrameworkExtensions;
+    using System.Globalization;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class LamdbaUtilityTests
+    public class EnumUtilityTests
     {
-        #region Public Methods and Operators
-
         [Test]
-        public void TestWithAnonymousType()
+        public void GetValues()
         {
-            const int AValue = 1;
-            const string BValue = "2";
-            const double CValue = 2.5;
-            var func = LambdaUtility.TypeLambda((int a, string b, double c) => new { A = a, B = b, C = c });
-            var result = func(AValue, BValue, CValue);
-            Assert.AreEqual(AValue, result.A);
-            Assert.AreEqual(BValue, result.B);
-            Assert.AreEqual(CValue, result.C);
+            TestEnum[] values = EnumUtility.GetValues<TestEnum>();
+
+            Assert.IsNotNull(values);
+            Assert.AreEqual(5, values.Length);
+            Assert.AreEqual(TestEnum.First, values[0]);
+            Assert.AreEqual(TestEnum.Second, values[1]);
+            Assert.AreEqual(TestEnum.Third, values[2]);
+            Assert.AreEqual(TestEnum.Fourth, values[3]);
+            Assert.AreEqual(TestEnum.Fifth, values[4]);
         }
 
-        #endregion
+        [Test]
+        public void Parse()
+        {
+            TestEnum value = EnumUtility.Parse<TestEnum>(TestEnum.Third.ToString());
+
+            Assert.AreEqual(TestEnum.Third, value);
+        }
+
+        [Test]
+        public void ParseIgnoreCase()
+        {
+            TestEnum value = EnumUtility.Parse<TestEnum>(TestEnum.Fourth.ToString().ToLowerInvariant(), true);
+
+            Assert.AreEqual(TestEnum.Fourth, value);
+        }
+
+        [Test]
+        public void ToObjectByte()
+        {
+            TestEnum value = EnumUtility.ToObject<TestEnum>((byte)TestEnum.Second);
+
+            Assert.AreEqual(TestEnum.Second, value);
+        }
+
+        [Test]
+        public void ToObjectInt32()
+        {
+            TestEnum value = EnumUtility.ToObject<TestEnum>((int)TestEnum.Fifth);
+
+            Assert.AreEqual(TestEnum.Fifth, value);
+        }
+
+        private enum TestEnum
+        {
+            First,
+            Second,
+            Third,
+            Fourth,
+            Fifth
+        }
     }
 }
