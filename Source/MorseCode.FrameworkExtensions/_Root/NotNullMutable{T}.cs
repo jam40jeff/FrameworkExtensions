@@ -56,12 +56,10 @@ namespace MorseCode.FrameworkExtensions
 
         #region Public Properties
 
-        public T Value
+        T INotNull<T>.Value
         {
             get
             {
-                Contract.Ensures(!ReferenceEquals(Contract.Result<T>(), null));
-
                 if (ReferenceEquals(this.value, null))
                 {
                     throw new InvalidOperationException("NotNull instances must be initialized with the constructor taking a non-null value.");
@@ -69,16 +67,17 @@ namespace MorseCode.FrameworkExtensions
 
                 return this.value;
             }
+        }
+
+        T INotNullMutable<T>.Value
+        {
+            get
+            {
+                return this.ImplicitConvert<INotNull<T>>().Value;
+            }
 
             set
             {
-                Contract.Ensures(!ReferenceEquals(this.value, null));
-
-                if (ReferenceEquals(value, null))
-                {
-                    throw new InvalidOperationException("Value cannot be null.");
-                }
-
                 this.value = value;
             }
         }
@@ -98,12 +97,12 @@ namespace MorseCode.FrameworkExtensions
         {
             Contract.Ensures(!ReferenceEquals(Contract.Result<T>(), null));
 
-            return value.Value;
+            return value.ImplicitConvert<INotNull<T>>().Value;
         }
 
         public override string ToString()
         {
-            return this.Value.SafeToString() ?? string.Empty;
+            return this.ImplicitConvert<INotNull<T>>().Value.SafeToString() ?? string.Empty;
         }
 
         #endregion

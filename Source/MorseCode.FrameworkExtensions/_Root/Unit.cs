@@ -46,11 +46,8 @@ namespace MorseCode.FrameworkExtensions
         /// </summary>
         public static readonly Unit Value = null;
 
-        internal Unit()
+        private Unit()
         {
-#pragma warning disable 168
-            Unit unit = this;
-#pragma warning restore 168
         }
 
         /// <summary>
