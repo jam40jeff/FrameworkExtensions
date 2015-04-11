@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NotNull{T}.cs" company="MorseCode Software">
+// <copyright file="NotNullTests.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -30,66 +30,57 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
-namespace MorseCode.FrameworkExtensions
+namespace MorseCode.FrameworkExtensions.Tests
 {
     using System;
-    using System.Diagnostics.Contracts;
 
-    internal struct NotNull<T> : INotNull<T>
+    using NUnit.Framework;
+
+    [TestFixture]
+    public class NotNullTests
     {
-        #region Fields
-
-        private readonly T value;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public NotNull(T value)
-        {
-            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
-
-            this.value = value;
-        }
-
-        #endregion
-
-        #region Public Properties
-
-        T INotNull<T>.Value
-        {
-            get
-            {
-                if (ReferenceEquals(this.value, null))
-                {
-                    throw new InvalidOperationException("NotNull instances must be initialized with the constructor taking a non-null value.");
-                }
-
-                return this.value;
-            }
-        }
-
-        #endregion
-
         #region Public Methods and Operators
 
-        public static explicit operator NotNull<T>(T value)
+        [Test]
+        public void Create()
         {
-            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
+            const string Value = "test value";
 
-            return new NotNull<T>(value);
+            INotNull<string> value = NotNull.Create(Value);
+
+            Assert.IsNotNull(value);
+            Assert.IsNotNull(value.Value);
+            Assert.AreEqual(Value, value.Value);
         }
 
-        public static implicit operator T(NotNull<T> value)
+        [Test]
+        public void CreateWithNull()
         {
-            Contract.Ensures(!ReferenceEquals(Contract.Result<T>(), null));
+            ArgumentNullException actual = null;
 
-            return value.ImplicitConvert<INotNull<T>>().Value;
+            try
+            {
+                NotNull.Create<string>(null);
+            }
+            catch (ArgumentNullException e)
+            {
+                actual = e;
+            }
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("value", actual.ParamName);
         }
 
-        public override string ToString()
+        [Test]
+        public void CreateWithValueType()
         {
-            return this.ImplicitConvert<INotNull<T>>().Value.SafeToString() ?? string.Empty;
+            const int Value = 5;
+
+            INotNull<int> value = NotNull.Create(Value);
+
+            Assert.IsNotNull(value);
+            Assert.IsNotNull(value.Value);
+            Assert.AreEqual(Value, value.Value);
         }
 
         #endregion

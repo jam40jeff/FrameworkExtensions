@@ -32,6 +32,8 @@
 
 namespace MorseCode.FrameworkExtensions
 {
+    using System.Diagnostics.Contracts;
+
     /// <summary>
     /// Contains extension methods for use with any <see cref="object"/>.
     /// </summary>
@@ -47,6 +49,8 @@ namespace MorseCode.FrameworkExtensions
         /// <returns>The object as type <typeparamref name="T"/>.</returns>
         public static T ImplicitConvert<T>(this T o)
         {
+            Contract.Ensures(ReferenceEquals(o, null) || !ReferenceEquals(Contract.Result<T>(), null));
+
             return o;
         }
 

@@ -38,19 +38,19 @@ namespace MorseCode.FrameworkExtensions.Tests
     public class UnitTests
     {
         [Test]
-        public void UnitValueIsEqualToItself()
+        public void ValueIsEqualToItself()
         {
             Assert.AreEqual(Unit.Value, Unit.Value);
         }
 
         [Test]
-        public void UnitValueIsSameAsItself()
+        public void ValueIsSameAsItself()
         {
             Assert.AreSame(Unit.Value, Unit.Value);
         }
 
         [Test]
-        public void UnitValueIsNull()
+        public void ValueIsNull()
         {
             Assert.AreSame(Unit.Value, null);
         }
