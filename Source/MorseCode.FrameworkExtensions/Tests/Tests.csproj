@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MorseCode.ITask, Version=1.0.61.0, Culture=neutral, PublicKeyToken=214321fcab92c5da, processorArchitecture=MSIL">
+      <HintPath>..\packages\MorseCode.ITask.1.0.61.0\lib\net45\MorseCode.ITask.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -43,9 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectionExtensionMethodsTests.cs" />
+    <Compile Include="ObjectExtensionMethodsTests.cs" />
     <Compile Include="DelegateUtilityTests.cs" />
     <Compile Include="EnumerableExtensionMethodsTests.cs" />
     <Compile Include="ListExtensionMethodsTests.cs" />
+    <Compile Include="TaskUtilityTests.cs" />
     <Compile Include="ToActionExtensionMethodsTests.cs">
       <DependentUpon>ToActionExtensionMethodsTests.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -63,6 +69,7 @@
       <DependentUpon>LambdaUtilityTests.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ToActionExtensionMethodsTests.tt">

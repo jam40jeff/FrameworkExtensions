@@ -35,6 +35,7 @@ namespace MorseCode.FrameworkExtensions
     using System;
     using System.Diagnostics.Contracts;
     using System.Threading.Tasks;
+
     using MorseCode.ITask;
 
     /// <summary>
@@ -90,6 +91,32 @@ namespace MorseCode.FrameworkExtensions
             AsyncHelper.FireAndForget(createTask().AsTask, handleException);
         }
 
+        /// <summary>Creates a <see cref="Task"/> that's completed with the specified exception.</summary>
+        /// <param name="exception">The exception to store into the completed task.</param>
+        /// <returns>The completed task in a faulted state.</returns>
+        public static Task FromException(Exception exception)
+        {
+            Contract.Requires<ArgumentNullException>(exception != null, "exception");
+            Contract.Ensures(Contract.Result<Task>() != null);
+
+            return FromException<bool>(exception);
+        }
+
+        /// <summary>Creates a <see cref="Task{T}"/> that's completed with the specified exception.</summary>
+        /// <typeparam name="T">The type of the result returned by the task.</typeparam>
+        /// <param name="exception">The exception to store into the completed task.</param>
+        /// <returns>The completed task in a faulted state.</returns>
+        public static Task<T> FromException<T>(Exception exception)
+        {
+            Contract.Requires<ArgumentNullException>(exception != null, "exception");
+            Contract.Ensures(Contract.Result<Task<T>>() != null);
+
+            TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
+            tcs.SetException(exception);
+            Contract.Assume(tcs.Task != null);
+            return tcs.Task;
+        }
+
         /// <summary>
         /// Safely executes an asynchronous method synchronously.
         /// </summary>
@@ -98,15 +125,26 @@ namespace MorseCode.FrameworkExtensions
         {
             Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
-            using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
+            try
             {
-                Task task = createTask();
-                if (task == null)
+                using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
                 {
-                    throw new InvalidOperationException("The createTask function may not return null.");
-                }
+                    Task task;
+                    try
+                    {
+                        task = createTask() ?? FromException(new ArgumentException("The createTask function may not return null.", "createTask"));
+                    }
+                    catch (Exception e)
+                    {
+                        task = FromException(e);
+                    }
 
-                asyncBridge.Run(task);
+                    asyncBridge.Run(task);
+                }
+            }
+            catch (AggregateException e)
+            {
+                throw e.InnerException;
             }
         }
 
@@ -118,15 +156,26 @@ namespace MorseCode.FrameworkExtensions
         {
             Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
-            using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
+            try
             {
-                ITask task = createTask();
-                if (task == null)
+                using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
                 {
-                    throw new InvalidOperationException("The createTask function may not return null.");
-                }
+                    ITask task;
+                    try
+                    {
+                        task = createTask() ?? FromException(new ArgumentException("The createTask function may not return null.", "createTask")).AsITask();
+                    }
+                    catch (Exception e)
+                    {
+                        task = FromException(e).AsITask();
+                    }
 
-                asyncBridge.Run(task.AsTask());
+                    asyncBridge.Run(task.AsTask());
+                }
+            }
+            catch (AggregateException e)
+            {
+                throw e.InnerException;
             }
         }
 
@@ -140,19 +189,30 @@ namespace MorseCode.FrameworkExtensions
         {
             Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
-            T result = default(T);
-            using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
+            try
             {
-                Task<T> task = createTask();
-                if (task == null)
+                T result = default(T);
+                using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
                 {
-                    throw new InvalidOperationException("The createTask function may not return null.");
+                    Task<T> task;
+                    try
+                    {
+                        task = createTask() ?? FromException<T>(new ArgumentException("The createTask function may not return null.", "createTask"));
+                    }
+                    catch (Exception e)
+                    {
+                        task = FromException<T>(e);
+                    }
+
+                    asyncBridge.Run(task, r => result = r);
                 }
 
-                asyncBridge.Run(task, r => result = r);
+                return result;
             }
-
-            return result;
+            catch (AggregateException e)
+            {
+                throw e.InnerException;
+            }
         }
 
         /// <summary>
@@ -165,19 +225,30 @@ namespace MorseCode.FrameworkExtensions
         {
             Contract.Requires<ArgumentNullException>(createTask != null, "createTask");
 
-            T result = default(T);
-            using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
+            try
             {
-                ITask<T> task = createTask();
-                if (task == null)
+                T result = default(T);
+                using (AsyncHelper.AsyncBridge asyncBridge = AsyncHelper.CreateBridge())
                 {
-                    throw new InvalidOperationException("The createTask function may not return null.");
+                    ITask<T> task;
+                    try
+                    {
+                        task = createTask() ?? FromException<T>(new ArgumentException("The createTask function may not return null.", "createTask")).AsITask();
+                    }
+                    catch (Exception e)
+                    {
+                        task = FromException<T>(e).AsITask();
+                    }
+
+                    asyncBridge.Run(task.AsTask(), r => result = r);
                 }
 
-                asyncBridge.Run(task.AsTask(), r => result = r);
+                return result;
             }
-
-            return result;
+            catch (AggregateException e)
+            {
+                throw e.InnerException;
+            }
         }
 
         #endregion
