@@ -141,7 +141,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncHelper.cs" />
+    <Compile Include="ReferenceEqualsEqualityComparer.cs" />
+    <Compile Include="UnhandledEnumValueException{T}.cs" />
+    <Compile Include="UnhandledEnumValueException.cs" />
     <Compile Include="CollectionExtensionMethods.cs" />
+    <Compile Include="ExplicitExpression{T,TProperty}.cs" />
+    <Compile Include="DictionaryExtensionMethods.cs" />
+    <Compile Include="ExplicitExpression{T}.cs" />
+    <Compile Include="LazyExtensionMethods.cs" />
+    <Compile Include="SymmetricEqualsEqualityComparer.cs" />
+    <Compile Include="SymmetricEqualsEqualityComparer{T}.cs" />
     <Compile Include="ToActionExtensionMethod.cs">
       <DependentUpon>ToActionExtensionMethod.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -158,7 +167,7 @@
     <Compile Include="NotNullInterfaceContract.cs" />
     <Compile Include="NotNullMutableInterfaceContract.cs" />
     <Compile Include="NotNull{T}.cs" />
-    <Compile Include="NotNullExtensionMethods.cs" />
+    <Compile Include="NotNullMonad.cs" />
     <Compile Include="NotNullMutable{T}.cs" />
     <Compile Include="ObjectExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -168,6 +177,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ToFuncExtensionMethod.tt</DependentUpon>
     </Compile>
+    <Compile Include="TypeExtensionMethods.cs" />
     <Compile Include="Unit.cs" />
   </ItemGroup>
   <ItemGroup>

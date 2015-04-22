@@ -139,6 +139,15 @@ namespace MorseCode.FrameworkExtensions.Tests
         }
 
         [Test]
+        public void EnumerableFlattenRecursivelyOnNull()
+        {
+            IEnumerable<Hierarchy> result = ((IEnumerable<Hierarchy>)null).FlattenRecursively(o => o.Children);
+
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.Any());
+        }
+
+        [Test]
         public void FlattenRecursively()
         {
             Hierarchy h = new Hierarchy(
@@ -184,6 +193,15 @@ namespace MorseCode.FrameworkExtensions.Tests
                     throw new AssertionException("Assertion failed for i = " + i + ".", e);
                 }
             }
+        }
+
+        [Test]
+        public void FlattenRecursivelyOnNull()
+        {
+            IEnumerable<Hierarchy> result = ((Hierarchy)null).FlattenRecursively(o => o.Children);
+
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.Any());
         }
 
         [Test]
@@ -341,6 +359,432 @@ namespace MorseCode.FrameworkExtensions.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
             Assert.IsNull(result[0]);
+        }
+
+        [Test]
+        public void FirstOrDefaultForStruct()
+        {
+            List<int> list = new List<int> { 2, 3, 4 };
+            int? result = list.FirstOrDefaultForStruct();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Value);
+        }
+
+        [Test]
+        public void FirstOrDefaultForStructOnEmpty()
+        {
+            List<int> list = new List<int>();
+            int? result = list.FirstOrDefaultForStruct();
+
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void FirstOrDefaultForStructOnNull()
+        {
+            ArgumentNullException actual = null;
+            try
+            {
+                ((List<int>)null).FirstOrDefaultForStruct();
+            }
+            catch (ArgumentNullException e)
+            {
+                actual = e;
+            }
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("enumerable", actual.ParamName);
+        }
+
+        [Test]
+        public void FirstOrDefaultForStructWithPredicate()
+        {
+            List<int> list = new List<int> { 2, 3, 4 };
+            int? result = list.FirstOrDefaultForStruct(n => n > 2);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Value);
+        }
+
+        [Test]
+        public void FirstOrDefaultForStructWithNonMatchingPredicate()
+        {
+            List<int> list = new List<int> { 2, 3, 4 };
+            int? result = list.FirstOrDefaultForStruct(n => n > 4);
+
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void FirstOrDefaultForStructWithPredicateOnEmpty()
+        {
+            List<int> list = new List<int>();
+            int? result = list.FirstOrDefaultForStruct(n => n > 2);
+
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void FirstOrDefaultForStructWithPredicateOnNull()
+        {
+            ArgumentNullException actual = null;
+            try
+            {
+                ((List<int>)null).FirstOrDefaultForStruct(n => n > 2);
+            }
+            catch (ArgumentNullException e)
+            {
+                actual = e;
+            }
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("enumerable", actual.ParamName);
+        }
+
+        [Test]
+        public void FirstOrDefaultForStructWithNullPredicate()
+        {
+            ArgumentNullException actual = null;
+
+            List<int> list = new List<int>();
+            try
+            {
+                list.FirstOrDefaultForStruct(null);
+            }
+            catch (ArgumentNullException e)
+            {
+                actual = e;
+            }
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("predicate", actual.ParamName);
+        }
+
+        [Test]
+        public void IndexOf()
+        {
+            IEnumerable<string> strings = new[] { "aa", "ab", "bb", "bc", "cc" };
+            int? result = strings.IndexOf("bc");
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Value);
+        }
+
+        [Test]
+        public void IndexOfNotFound()
+        {
+            IEnumerable<string> strings = new[] { "aa", "ab", "bb", "bc", "cc" };
+            int? result = strings.IndexOf("cd");
+
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void IndexOfOnNull()
+        {
+            ArgumentNullException actual = null;
+            try
+            {
+                ((IEnumerable<string>)null).IndexOf("bc");
+            }
+            catch (ArgumentNullException e)
+            {
+                actual = e;
+            }
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("enumerable", actual.ParamName);
+        }
+
+        [Test]
+        public void IndexOfWithPredicate()
+        {
+            IEnumerable<string> strings = new[] { "aa", "ab", "bb", "bc", "cc" };
+            int? result = strings.IndexOf(s => s.EndsWith("b"));
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Value);
+        }
+
+        [Test]
+        public void IndexOfWithPredicateNotFound()
+        {
+            IEnumerable<string> strings = new[] { "aa", "ab", "bb", "bc", "cc" };
+            int? result = strings.IndexOf(s => s.EndsWith("d"));
+
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void IndexOfOnNullWithPredicate()
+        {
+            ArgumentNullException actual = null;
+            try
+            {
+                ((IEnumerable<string>)null).IndexOf(s => s.EndsWith("b"));
+            }
+            catch (ArgumentNullException e)
+            {
+                actual = e;
+            }
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("enumerable", actual.ParamName);
+        }
+
+        [Test]
+        public void IndexOfWithNullPredicate()
+        {
+            IEnumerable<string> strings = new[] { "aa", "ab", "bb", "bc", "cc" };
+
+            ArgumentNullException actual = null;
+            try
+            {
+                strings.IndexOf((Func<string, bool>)null);
+            }
+            catch (ArgumentNullException e)
+            {
+                actual = e;
+            }
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("predicate", actual.ParamName);
+        }
+
+        [Test]
+        public void IndexesWhere()
+        {
+            IEnumerable<string> strings = new[] { "aa", "ab", "bb", "bc", "cc" };
+            IReadOnlyList<int> result = strings.IndexesWhere(s => s.EndsWith("b")).ToArray();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(1, result[0]);
+            Assert.AreEqual(2, result[1]);
+        }
+
+        [Test]
+        public void IndexesWhereNotFound()
+        {
+            IEnumerable<string> strings = new[] { "aa", "ab", "bb", "bc", "cc" };
+            IReadOnlyList<int> result = strings.IndexesWhere(s => s.EndsWith("d")).ToArray();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [Test]
+        public void IndexesWhereOnNull()
+        {
+            ArgumentNullException actual = null;
+            try
+            {
+                ((IEnumerable<string>)null).IndexesWhere(s => s.EndsWith("b"));
+            }
+            catch (ArgumentNullException e)
+            {
+                actual = e;
+            }
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("enumerable", actual.ParamName);
+        }
+
+        [Test]
+        public void IndexesWhereWithNullPredicate()
+        {
+            IEnumerable<string> strings = new[] { "aa", "ab", "bb", "bc", "cc" };
+
+            ArgumentNullException actual = null;
+            try
+            {
+                strings.IndexesWhere(null);
+            }
+            catch (ArgumentNullException e)
+            {
+                actual = e;
+            }
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("predicate", actual.ParamName);
+        }
+
+        [Test]
+        public void SetEqual()
+        {
+            IEnumerable<int> s1 = new[] { 4, 2, 7, 5, 3 };
+            IEnumerable<int> s2 = new[] { 2, 5, 4, 3, 7 };
+
+            Assert.IsTrue(s1.SetEqual(s2));
+        }
+
+        [Test]
+        public void SetEqualOnEnumerables()
+        {
+            IEnumerable<int> s1 = GetEnumerable(new[] { 4, 2, 7, 5, 3 });
+            IEnumerable<int> s2 = GetEnumerable(new[] { 2, 5, 4, 3, 7 });
+
+            Assert.IsTrue(s1.SetEqual(s2));
+        }
+
+        private static IEnumerable<T> GetEnumerable<T>(IEnumerable<T> enumerable)
+        {
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach (T item in enumerable)
+            // ReSharper restore LoopCanBeConvertedToQuery
+            {
+                yield return item;
+            }
+        }
+
+        [Test]
+        public void SetEqualRepeatedElements()
+        {
+            IEnumerable<int> s1 = new[] { 4, 2, 7, 5, 4 };
+            IEnumerable<int> s2 = new[] { 2, 5, 4, 4, 7 };
+
+            Assert.IsTrue(s1.SetEqual(s2));
+        }
+
+        [Test]
+        public void SetEqualFirstMoreRepeatedElements()
+        {
+            IEnumerable<int> s1 = new[] { 4, 4, 7, 5, 4 };
+            IEnumerable<int> s2 = new[] { 2, 5, 4, 4, 7 };
+
+            Assert.IsFalse(s1.SetEqual(s2));
+        }
+
+        [Test]
+        public void SetEqualSecondMoreRepeatedElements()
+        {
+            IEnumerable<int> s1 = new[] { 4, 2, 7, 5, 4 };
+            IEnumerable<int> s2 = new[] { 4, 5, 4, 4, 7 };
+
+            Assert.IsFalse(s1.SetEqual(s2));
+        }
+
+        [Test]
+        public void SetEqualFirstEmpty()
+        {
+            IEnumerable<int> s1 = new int[0];
+            IEnumerable<int> s2 = new[] { 2, 5, 4, 3, 7 };
+
+            Assert.IsFalse(s1.SetEqual(s2));
+        }
+
+        [Test]
+        public void SetEqualSecondEmpty()
+        {
+            IEnumerable<int> s1 = new[] { 4, 2, 7, 5, 3 };
+            IEnumerable<int> s2 = new int[0];
+
+            Assert.IsFalse(s1.SetEqual(s2));
+        }
+
+        [Test]
+        public void SetEqualBothEmpty()
+        {
+            IEnumerable<int> s1 = new int[0];
+            IEnumerable<int> s2 = new int[0];
+
+            Assert.IsTrue(s1.SetEqual(s2));
+        }
+
+        [Test]
+        public void SetEqualFirstNull()
+        {
+            IEnumerable<int> s2 = new[] { 2, 5, 4, 3, 7 };
+
+            Assert.IsFalse(((IEnumerable<int>)null).SetEqual(s2));
+        }
+
+        [Test]
+        public void SetEqualSecondNull()
+        {
+            IEnumerable<int> s1 = new[] { 4, 2, 7, 5, 3 };
+
+            Assert.IsFalse(s1.SetEqual(null));
+        }
+
+        [Test]
+        public void SetEqualBothNull()
+        {
+            Assert.IsTrue(((IEnumerable<int>)null).SetEqual(null));
+        }
+
+        [Test]
+        public void SetEqualDifferentElements()
+        {
+            IEnumerable<int> s1 = new[] { 4, 2, 8, 5, 3 };
+            IEnumerable<int> s2 = new[] { 2, 5, 4, 3, 7 };
+
+            Assert.IsFalse(s1.SetEqual(s2));
+        }
+
+        [Test]
+        public void SetEqualDifferentFirstLessElements()
+        {
+            IEnumerable<int> s1 = new[] { 4, 2, 5, 3 };
+            IEnumerable<int> s2 = new[] { 2, 5, 4, 3, 7 };
+
+            Assert.IsFalse(s1.SetEqual(s2));
+        }
+
+        [Test]
+        public void SetEqualDifferentSecondLessElements()
+        {
+            IEnumerable<int> s1 = new[] { 4, 2, 7, 5, 3 };
+            IEnumerable<int> s2 = new[] { 2, 5, 3, 7 };
+
+            Assert.IsFalse(s1.SetEqual(s2));
+        }
+
+        [Test]
+        public void SetEqualWithComparer()
+        {
+            IEnumerable<int> s1 = new[] { 4, 2, 8, 5, 3 };
+            IEnumerable<int> s2 = new[] { 2, 5, 4, 3, 7 };
+
+            Assert.IsTrue(s1.SetEqual(s2, new SevenEqualsEightComparer()));
+        }
+
+        [Test]
+        public void SetEqualWithComparerDifferentElements()
+        {
+            IEnumerable<int> s1 = new[] { 4, 2, 8, 5, 9 };
+            IEnumerable<int> s2 = new[] { 2, 5, 4, 3, 7 };
+
+            Assert.IsFalse(s1.SetEqual(s2, new SevenEqualsEightComparer()));
+        }
+
+        private class SevenEqualsEightComparer : IEqualityComparer<int>
+        {
+            public bool Equals(int x, int y)
+            {
+                if (x == 8)
+                {
+                    x = 7;
+                }
+
+                if (y == 8)
+                {
+                    y = 7;
+                }
+
+                return x == y;
+            }
+
+            public int GetHashCode(int obj)
+            {
+                if (obj == 8)
+                {
+                    obj = 7;
+                }
+
+                return obj.GetHashCode();
+            }
         }
 
         #endregion

@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NotNullMutable{T}.cs" company="MorseCode Software">
+// <copyright file="LazyExtensionMethods.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -35,60 +35,29 @@ namespace MorseCode.FrameworkExtensions
     using System;
     using System.Diagnostics.Contracts;
 
-    internal struct NotNullMutable<T> : INotNullMutable<T>
+    /// <summary>
+    /// Extension methods for use with lazy-loaded values.
+    /// </summary>
+    public static class LazyExtensionMethods
     {
-        #region Fields
-
-        private T value;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public NotNullMutable(T value)
-        {
-            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
-
-            this.value = value;
-        }
-
-        #endregion
-
-        #region Public Properties
-
-        T INotNull<T>.Value
-        {
-            get
-            {
-                if (ReferenceEquals(this.value, null))
-                {
-                    throw new InvalidOperationException("NotNull instances must be initialized with the constructor taking a non-null value.");
-                }
-
-                return this.value;
-            }
-        }
-
-        T INotNullMutable<T>.Value
-        {
-            get
-            {
-                return this.ImplicitlyConvert<INotNull<T>>().Value;
-            }
-
-            set
-            {
-                this.value = value;
-            }
-        }
-
-        #endregion
-
         #region Public Methods and Operators
 
-        public override string ToString()
+        /// <summary>
+        /// Ensures that the value has been created for the specified lazy-loaded value.
+        /// </summary>
+        /// <param name="lazy">
+        /// The lazy-loaded value to for which to ensure that the value has been created.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of the value created by <paramref name="lazy"/>.
+        /// </typeparam>
+        public static void EnsureValue<T>(this Lazy<T> lazy)
         {
-            return this.ImplicitlyConvert<INotNull<T>>().Value.SafeToString() ?? string.Empty;
+            Contract.Requires<ArgumentNullException>(lazy != null, "lazy");
+
+#pragma warning disable 168
+            T value = lazy.Value;
+#pragma warning restore 168
         }
 
         #endregion

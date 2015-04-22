@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NotNullMutable{T}.cs" company="MorseCode Software">
+// <copyright file="SymmetricEqualsEqualityComparer.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -32,63 +32,70 @@
 
 namespace MorseCode.FrameworkExtensions
 {
-    using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
-    internal struct NotNullMutable<T> : INotNullMutable<T>
+    /// <summary>
+    /// An equality comparer which compares two objects for symmetric equality, where two non-null objects are equal
+    /// if and only if <c>a.Equals(b)</c> and <c>b.Equals(a)</c>.
+    /// </summary>
+    /// <remarks>
+    /// To avoid boxing, use the generic version, <see cref="SymmetricEqualsEqualityComparer{T}"/>, for value types.
+    /// </remarks>
+    public class SymmetricEqualsEqualityComparer : IEqualityComparer<object>, IEqualityComparer
     {
-        #region Fields
+        #region Static Fields
 
-        private T value;
+        private static readonly SymmetricEqualsEqualityComparer PrivateInstance = new SymmetricEqualsEqualityComparer();
 
         #endregion
 
         #region Constructors and Destructors
 
-        public NotNullMutable(T value)
+        private SymmetricEqualsEqualityComparer()
         {
-            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
-
-            this.value = value;
         }
 
         #endregion
 
         #region Public Properties
 
-        T INotNull<T>.Value
+        /// <summary>
+        /// Gets the singleton instance of <see cref="SymmetricEqualsEqualityComparer"/>.
+        /// </summary>
+        public static SymmetricEqualsEqualityComparer Instance
         {
             get
             {
-                if (ReferenceEquals(this.value, null))
-                {
-                    throw new InvalidOperationException("NotNull instances must be initialized with the constructor taking a non-null value.");
-                }
+                Contract.Ensures(Contract.Result<SymmetricEqualsEqualityComparer>() != null);
 
-                return this.value;
-            }
-        }
-
-        T INotNullMutable<T>.Value
-        {
-            get
-            {
-                return this.ImplicitlyConvert<INotNull<T>>().Value;
-            }
-
-            set
-            {
-                this.value = value;
+                return PrivateInstance;
             }
         }
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Explicit Interface Methods
 
-        public override string ToString()
+        bool IEqualityComparer.Equals(object x, object y)
         {
-            return this.ImplicitlyConvert<INotNull<T>>().Value.SafeToString() ?? string.Empty;
+            return this.ImplicitlyConvert<IEqualityComparer<object>>().Equals(x, y);
+        }
+
+        int IEqualityComparer.GetHashCode(object obj)
+        {
+            return this.ImplicitlyConvert<IEqualityComparer<object>>().GetHashCode(obj);
+        }
+
+        bool IEqualityComparer<object>.Equals(object x, object y)
+        {
+            return x.SymmetricEquals(y);
+        }
+
+        int IEqualityComparer<object>.GetHashCode(object obj)
+        {
+            return ReferenceEquals(obj, null) ? 0 : obj.GetHashCode();
         }
 
         #endregion

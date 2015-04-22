@@ -83,6 +83,17 @@ namespace MorseCode.FrameworkExtensions.Tests
             Assert.AreEqual(Value, value.Value);
         }
 
+        [Test]
+        public void ToStringMethod()
+        {
+            const string Value = "test value";
+
+            INotNull<string> value = NotNull.Create(Value);
+            string actual = value.ToString();
+
+            Assert.AreEqual(Value, actual);
+        }
+
         #endregion
     }
 }

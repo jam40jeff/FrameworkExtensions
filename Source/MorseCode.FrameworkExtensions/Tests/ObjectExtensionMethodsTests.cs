@@ -40,19 +40,19 @@ namespace MorseCode.FrameworkExtensions.Tests
         #region Public Methods and Operators
 
         [Test]
-        public void ImplictConvert()
+        public void ImplictlyConvert()
         {
             const string Value = "test";
-            object o = Value.ImplicitConvert<object>();
+            object o = Value.ImplicitlyConvert<object>();
 
             Assert.AreSame(Value, o);
         }
 
         [Test]
-        public void ImplictConvertWithSameType()
+        public void ImplictlyConvertWithSameType()
         {
             const string Value = "test";
-            string o = Value.ImplicitConvert();
+            string o = Value.ImplicitlyConvert();
 
             Assert.AreSame(Value, o);
         }
@@ -72,7 +72,130 @@ namespace MorseCode.FrameworkExtensions.Tests
             Assert.AreEqual(null, ((Test)null).SafeToString());
         }
 
+        [Test]
+        public void SymmetricEqualsFalse()
+        {
+            A a = new A();
+            a.BaseValue = 5;
+            a.Value = 7;
+
+            B b = new B();
+            b.BaseValue = 5;
+
+            Assert.IsFalse(a.SymmetricEquals(b));
+        }
+
+        [Test]
+        public void SymmetricEqualsTrue()
+        {
+            A a1 = new A();
+            a1.BaseValue = 5;
+            a1.Value = 7;
+
+            A a2 = new A();
+            a2.BaseValue = 5;
+            a2.Value = 7;
+
+            Assert.IsTrue(a1.SymmetricEquals(a2));
+        }
+
+        [Test]
+        public void SymmetricFirstNull()
+        {
+            A a = new A();
+
+            Assert.IsFalse(((object)null).SymmetricEquals(a));
+        }
+
+        [Test]
+        public void SymmetricSecondNull()
+        {
+            A a = new A();
+
+            Assert.IsFalse(a.SymmetricEquals(null));
+        }
+
+        [Test]
+        public void SymmetricBothNull()
+        {
+            Assert.IsTrue(((object)null).SymmetricEquals(null));
+        }
+
         #endregion
+
+        private class A : Base
+        {
+            #region Public Properties
+
+            public int Value { get; set; }
+
+            #endregion
+
+            #region Public Methods and Operators
+
+            public override bool Equals(object obj)
+            {
+                A personObj = obj as A;
+                if (personObj == null || !base.Equals(obj))
+                {
+                    return false;
+                }
+
+                return Value.Equals(personObj.Value);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (base.GetHashCode() * 397) ^ this.Value;
+                }
+            }
+
+            #endregion
+
+            #region Methods
+
+            protected bool Equals(A other)
+            {
+                return base.Equals(other) && this.Value == other.Value;
+            }
+
+            #endregion
+        }
+
+        private class B : Base
+        {
+        }
+
+        private abstract class Base
+        {
+            #region Public Properties
+
+            public int BaseValue { get; set; }
+
+            #endregion
+
+            #region Public Methods and Operators
+
+            public override bool Equals(object obj)
+            {
+                Base personObj = obj as Base;
+                if (personObj == null)
+                {
+                    return false;
+                }
+
+                return BaseValue.Equals(personObj.BaseValue);
+            }
+
+            public override int GetHashCode()
+            {
+                return this.BaseValue;
+            }
+
+            #endregion
+        }
 
         private class Test
         {

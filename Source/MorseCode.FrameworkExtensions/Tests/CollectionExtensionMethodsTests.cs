@@ -32,8 +32,10 @@
 
 namespace MorseCode.FrameworkExtensions.Tests
 {
+    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
 
     using NUnit.Framework;
 
@@ -94,6 +96,41 @@ namespace MorseCode.FrameworkExtensions.Tests
             target.SetTo(source);
 
             Assert.AreSame(source, target);
+        }
+
+        [Test]
+        public void AsReadOnly()
+        {
+            ICollection<int> collection = new Collection<int> { 5, 6, 7 };
+            IReadOnlyCollection<int> result = collection.AsReadOnly();
+
+            Assert.IsNotInstanceOf<ICollection<int>>(result);
+            Assert.AreEqual(collection.Count, result.Count);
+            Assert.IsTrue(result.SequenceEqual(collection));
+            IEnumerator<int> collectionEnumerator = collection.GetEnumerator();
+            foreach (object item in (IEnumerable)result)
+            {
+                Assert.IsTrue(collectionEnumerator.MoveNext());
+                Assert.AreEqual(item, collectionEnumerator.Current);
+            }
+        }
+
+        [Test]
+        public void AsReadOnlyOnEmpty()
+        {
+            ICollection<int> collection = new Collection<int>();
+            IReadOnlyCollection<int> result = collection.AsReadOnly();
+
+            Assert.IsNotInstanceOf<ICollection<int>>(result);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [Test]
+        public void AsReadOnlyOnNull()
+        {
+            IReadOnlyCollection<int> result = ((ICollection<int>)null).AsReadOnly();
+
+            Assert.IsNull(result);
         }
 
         #endregion

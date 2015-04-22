@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NotNullMutable{T}.cs" company="MorseCode Software">
+// <copyright file="UnhandledEnumValueExceptionTests.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -30,65 +30,40 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
-namespace MorseCode.FrameworkExtensions
+namespace MorseCode.FrameworkExtensions.Tests
 {
-    using System;
-    using System.Diagnostics.Contracts;
+    using NUnit.Framework;
 
-    internal struct NotNullMutable<T> : INotNullMutable<T>
+    [TestFixture]
+    public class UnhandledEnumValueExceptionTests
     {
-        #region Fields
-
-        private T value;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public NotNullMutable(T value)
+        [Test]
+        public void Create()
         {
-            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
+            UnhandledEnumValueException<Test> result = UnhandledEnumValueException.Create(Test.Third);
+            UnhandledEnumValueException untypedResult = result;
 
-            this.value = value;
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(untypedResult);
+
+            Assert.AreEqual(Test.Third, result.Value);
+            Assert.AreEqual(Test.Third, untypedResult.Value);
+
+            Assert.AreEqual(typeof(Test), result.Type);
+            Assert.AreEqual(typeof(Test), untypedResult.Type);
         }
 
-        #endregion
+        #region Enums
 
-        #region Public Properties
-
-        T INotNull<T>.Value
+        private enum Test
         {
-            get
-            {
-                if (ReferenceEquals(this.value, null))
-                {
-                    throw new InvalidOperationException("NotNull instances must be initialized with the constructor taking a non-null value.");
-                }
+            // ReSharper disable UnusedMember.Local
+            First,
 
-                return this.value;
-            }
-        }
+            Second,
+            // ReSharper restore UnusedMember.Local
 
-        T INotNullMutable<T>.Value
-        {
-            get
-            {
-                return this.ImplicitlyConvert<INotNull<T>>().Value;
-            }
-
-            set
-            {
-                this.value = value;
-            }
-        }
-
-        #endregion
-
-        #region Public Methods and Operators
-
-        public override string ToString()
-        {
-            return this.ImplicitlyConvert<INotNull<T>>().Value.SafeToString() ?? string.Empty;
+            Third
         }
 
         #endregion

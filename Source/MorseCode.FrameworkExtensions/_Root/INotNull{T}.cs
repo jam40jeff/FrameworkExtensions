@@ -42,7 +42,7 @@ namespace MorseCode.FrameworkExtensions
     /// </typeparam>
     /// <remarks>
     /// This interface is implemented internally and should not be implemented by any other class outside of this assembly.
-    /// To obtain an <see cref="INotNull{T}"/> instance, either use the <see cref="NotNullExtensionMethods.ToNotNull{T}"/> extension method,
+    /// To obtain an <see cref="INotNull{T}"/> instance, either use the <see cref="NotNullMonad.ToNotNull{T}"/> extension method,
     /// or use the <see cref="NotNull.Create{T}"/> factory method.
     /// </remarks>
     [ContractClass(typeof(NotNullInterfaceContract<>))]

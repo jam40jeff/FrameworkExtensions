@@ -73,23 +73,9 @@ namespace MorseCode.FrameworkExtensions
 
         #region Public Methods and Operators
 
-        public static explicit operator NotNull<T>(T value)
-        {
-            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
-
-            return new NotNull<T>(value);
-        }
-
-        public static implicit operator T(NotNull<T> value)
-        {
-            Contract.Ensures(!ReferenceEquals(Contract.Result<T>(), null));
-
-            return value.ImplicitConvert<INotNull<T>>().Value;
-        }
-
         public override string ToString()
         {
-            return this.ImplicitConvert<INotNull<T>>().Value.SafeToString() ?? string.Empty;
+            return this.ImplicitlyConvert<INotNull<T>>().Value.SafeToString() ?? string.Empty;
         }
 
         #endregion
