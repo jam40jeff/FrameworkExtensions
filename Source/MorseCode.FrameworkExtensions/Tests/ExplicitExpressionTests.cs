@@ -50,7 +50,7 @@ namespace MorseCode.FrameworkExtensions.Tests
 
             Assert.IsNotNull(explicitExpression);
             Assert.IsNotNull(explicitExpression.Expression);
-            Assert.IsInstanceOf<Expression<Func<Test, int?>>>(explicitExpression.Expression);
+            Assert.IsInstanceOf<Expression<Func<Test, int>>>(explicitExpression.Expression);
             Assert.IsNotNull(explicitExpression.Expression.Body);
             Assert.IsInstanceOf<MemberExpression>(explicitExpression.Expression.Body);
             MemberExpression memberExpression = (MemberExpression)explicitExpression.Expression.Body;
