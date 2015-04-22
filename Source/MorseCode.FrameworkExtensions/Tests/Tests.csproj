@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectionExtensionMethodsTests.cs" />
-    <Compile Include="ReferenceEqualsEqualityComparerTests.cs" />
+    <Compile Include="ReferenceEqualityComparerTests.cs" />
     <Compile Include="UnhandledEnumValueExceptionTests.cs" />
     <Compile Include="TypeExtensionMethodsTests.cs" />
     <Compile Include="LazyExtensionMethodsTests.cs" />
@@ -60,7 +60,7 @@
     <Compile Include="DelegateUtilityTests.cs" />
     <Compile Include="EnumerableExtensionMethodsTests.cs" />
     <Compile Include="ListExtensionMethodsTests.cs" />
-    <Compile Include="SymmetricEqualsEqualityComparerTests.cs" />
+    <Compile Include="SymmetricEqualityComparerTests.cs" />
     <Compile Include="TaskUtilityTests.cs" />
     <Compile Include="ToActionExtensionMethodsTests.cs">
       <DependentUpon>ToActionExtensionMethodsTests.tt</DependentUpon>

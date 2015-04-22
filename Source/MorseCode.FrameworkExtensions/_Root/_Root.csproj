@@ -141,7 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncHelper.cs" />
-    <Compile Include="ReferenceEqualsEqualityComparer.cs" />
+    <Compile Include="ReferenceEqualityComparer.cs" />
     <Compile Include="UnhandledEnumValueException{T}.cs" />
     <Compile Include="UnhandledEnumValueException.cs" />
     <Compile Include="CollectionExtensionMethods.cs" />
@@ -149,8 +149,8 @@
     <Compile Include="DictionaryExtensionMethods.cs" />
     <Compile Include="ExplicitExpression{T}.cs" />
     <Compile Include="LazyExtensionMethods.cs" />
-    <Compile Include="SymmetricEqualsEqualityComparer.cs" />
-    <Compile Include="SymmetricEqualsEqualityComparer{T}.cs" />
+    <Compile Include="SymmetricEqualityComparer.cs" />
+    <Compile Include="SymmetricEqualityComparer{T}.cs" />
     <Compile Include="ToActionExtensionMethod.cs">
       <DependentUpon>ToActionExtensionMethod.tt</DependentUpon>
       <AutoGen>True</AutoGen>
