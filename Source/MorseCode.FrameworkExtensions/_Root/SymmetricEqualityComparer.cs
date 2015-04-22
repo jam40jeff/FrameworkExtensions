@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SymmetricEqualsEqualityComparer.cs" company="MorseCode Software">
+// <copyright file="SymmetricEqualityComparer.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -37,22 +37,23 @@ namespace MorseCode.FrameworkExtensions
     using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// An equality comparer which compares two objects for reference equality.
+    /// An equality comparer which compares two objects for symmetric equality, where two non-null objects are equal
+    /// if and only if <c>a.Equals(b)</c> and <c>b.Equals(a)</c>.
     /// </summary>
     /// <remarks>
-    /// This equality comparer should only be used to compare reference types.
+    /// To avoid boxing, use the generic version, <see cref="SymmetricEqualsEqualityComparer{T}"/>, for value types.
     /// </remarks>
-    public class ReferenceEqualsEqualityComparer : IEqualityComparer<object>, IEqualityComparer
+    public class SymmetricEqualityComparer : IEqualityComparer<object>, IEqualityComparer
     {
         #region Static Fields
 
-        private static readonly ReferenceEqualsEqualityComparer PrivateInstance = new ReferenceEqualsEqualityComparer();
+        private static readonly SymmetricEqualityComparer PrivateInstance = new SymmetricEqualityComparer();
 
         #endregion
 
         #region Constructors and Destructors
 
-        private ReferenceEqualsEqualityComparer()
+        private SymmetricEqualityComparer()
         {
         }
 
@@ -61,13 +62,13 @@ namespace MorseCode.FrameworkExtensions
         #region Public Properties
 
         /// <summary>
-        /// Gets the singleton instance of <see cref="SymmetricEqualsEqualityComparer"/>.
+        /// Gets the singleton instance of <see cref="SymmetricEqualityComparer"/>.
         /// </summary>
-        public static ReferenceEqualsEqualityComparer Instance
+        public static SymmetricEqualityComparer Instance
         {
             get
             {
-                Contract.Ensures(Contract.Result<ReferenceEqualsEqualityComparer>() != null);
+                Contract.Ensures(Contract.Result<SymmetricEqualityComparer>() != null);
 
                 return PrivateInstance;
             }
@@ -89,7 +90,7 @@ namespace MorseCode.FrameworkExtensions
 
         bool IEqualityComparer<object>.Equals(object x, object y)
         {
-            return ReferenceEquals(x, y);
+            return x.SymmetricEquals(y);
         }
 
         int IEqualityComparer<object>.GetHashCode(object obj)

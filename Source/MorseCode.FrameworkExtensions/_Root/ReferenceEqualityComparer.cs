@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SymmetricEqualsEqualityComparer{T}.cs" company="MorseCode Software">
+// <copyright file="ReferenceEqualityComparer.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -32,34 +32,27 @@
 
 namespace MorseCode.FrameworkExtensions
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// An equality comparer which compares two objects for symmetric equality, where two non-null objects are equal
-    /// if and only if <c>a.Equals(b)</c> and <c>b.Equals(a)</c>.
+    /// An equality comparer which compares two objects for reference equality.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of the objects being compared.
-    /// </typeparam>
     /// <remarks>
-    /// This class is valid for value types as it avoids boxing.  Use the non-generic version,
-    /// <see cref="SymmetricEqualsEqualityComparer"/>, for reference types.
+    /// This equality comparer should only be used to compare reference types.
     /// </remarks>
-    public class SymmetricEqualsEqualityComparer<T> : IEqualityComparer<T>, IEqualityComparer
-        where T : struct
+    public class ReferenceEqualityComparer : IEqualityComparer<object>, IEqualityComparer
     {
         #region Static Fields
 
-        private static readonly SymmetricEqualsEqualityComparer<T> PrivateInstance = new SymmetricEqualsEqualityComparer<T>();
+        private static readonly ReferenceEqualityComparer PrivateInstance = new ReferenceEqualityComparer();
 
         #endregion
 
         #region Constructors and Destructors
 
-        private SymmetricEqualsEqualityComparer()
+        private ReferenceEqualityComparer()
         {
         }
 
@@ -68,13 +61,13 @@ namespace MorseCode.FrameworkExtensions
         #region Public Properties
 
         /// <summary>
-        /// Gets the singleton instance of <see cref="SymmetricEqualsEqualityComparer{T}"/>.
+        /// Gets the singleton instance of <see cref="SymmetricEqualityComparer"/>.
         /// </summary>
-        public static SymmetricEqualsEqualityComparer<T> Instance
+        public static ReferenceEqualityComparer Instance
         {
             get
             {
-                Contract.Ensures(Contract.Result<SymmetricEqualsEqualityComparer<T>>() != null);
+                Contract.Ensures(Contract.Result<ReferenceEqualityComparer>() != null);
 
                 return PrivateInstance;
             }
@@ -86,32 +79,22 @@ namespace MorseCode.FrameworkExtensions
 
         bool IEqualityComparer.Equals(object x, object y)
         {
-            if (x is T && y is T)
-            {
-                return this.ImplicitlyConvert<IEqualityComparer<T>>().Equals((T)x, (T)y);
-            }
-
-            return x == y;
+            return this.ImplicitlyConvert<IEqualityComparer<object>>().Equals(x, y);
         }
 
         int IEqualityComparer.GetHashCode(object obj)
         {
-            if (!(obj is T))
-            {
-                throw new ArgumentException("Parameter obj must be convertible to type " + typeof(T).FullName + ".", "obj");
-            }
-
-            return this.ImplicitlyConvert<IEqualityComparer<T>>().GetHashCode((T)obj);
+            return this.ImplicitlyConvert<IEqualityComparer<object>>().GetHashCode(obj);
         }
 
-        bool IEqualityComparer<T>.Equals(T x, T y)
+        bool IEqualityComparer<object>.Equals(object x, object y)
         {
-            return x.SymmetricEquals(y);
+            return ReferenceEquals(x, y);
         }
 
-        int IEqualityComparer<T>.GetHashCode(T obj)
+        int IEqualityComparer<object>.GetHashCode(object obj)
         {
-            return obj.GetHashCode();
+            return ReferenceEquals(obj, null) ? 0 : obj.GetHashCode();
         }
 
         #endregion

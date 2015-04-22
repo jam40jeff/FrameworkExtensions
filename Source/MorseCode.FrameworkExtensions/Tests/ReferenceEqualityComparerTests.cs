@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReferenceEqualsEqualityComparerTests.cs" company="MorseCode Software">
+// <copyright file="ReferenceEqualityComparerTests.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -38,14 +38,14 @@ namespace MorseCode.FrameworkExtensions.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class ReferenceEqualsEqualityComparerTests
+    public class ReferenceEqualityComparerTests
     {
         #region Public Methods and Operators
 
         [Test]
         public void BothNull()
         {
-            IEqualityComparer<Test> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<Test> comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsTrue(comparer.Equals(null, null));
         }
@@ -53,7 +53,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void FirstNull()
         {
-            IEqualityComparer<Test> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<Test> comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(null, new Test()));
         }
@@ -61,7 +61,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void FirstNullForStruct()
         {
-            IEqualityComparer<object> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<object> comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(null, 5));
         }
@@ -69,7 +69,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GetHashCodeTest()
         {
-            IEqualityComparer<Test> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<Test> comparer = ReferenceEqualityComparer.Instance;
             Test a = new Test();
 
             Assert.AreEqual(a.GetHashCode(), comparer.GetHashCode(a));
@@ -78,7 +78,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GetHashCodeTestForStruct()
         {
-            IEqualityComparer<object> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<object> comparer = ReferenceEqualityComparer.Instance;
             const int Value = 5;
 
             Assert.AreEqual(Value.GetHashCode(), comparer.GetHashCode(Value));
@@ -87,7 +87,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GetHashCodeWithNull()
         {
-            IEqualityComparer<Test> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<Test> comparer = ReferenceEqualityComparer.Instance;
 
             Assert.AreEqual(0, comparer.GetHashCode(null));
         }
@@ -95,7 +95,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void IsEqual()
         {
-            IEqualityComparer<Test> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<Test> comparer = ReferenceEqualityComparer.Instance;
             Test a = new Test();
 
             Assert.IsTrue(comparer.Equals(a, a));
@@ -104,7 +104,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void IsEqualForStruct()
         {
-            IEqualityComparer<object> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<object> comparer = ReferenceEqualityComparer.Instance;
             const int Value = 5;
 
             Assert.IsFalse(comparer.Equals(Value, Value));
@@ -113,7 +113,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void IsNotEqual()
         {
-            IEqualityComparer<Test> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<Test> comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(new Test(), new Test()));
         }
@@ -121,7 +121,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void IsNotEqualForStruct()
         {
-            IEqualityComparer<object> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<object> comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(5, 5));
         }
@@ -129,7 +129,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void SecondNull()
         {
-            IEqualityComparer<Test> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<Test> comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(new Test(), null));
         }
@@ -137,7 +137,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void SecondNullForStruct()
         {
-            IEqualityComparer<object> comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer<object> comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(5, null));
         }
@@ -145,7 +145,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedBothNull()
         {
-            IEqualityComparer comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsTrue(comparer.Equals(null, null));
         }
@@ -153,7 +153,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedFirstNull()
         {
-            IEqualityComparer comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(null, new Test()));
         }
@@ -161,7 +161,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedFirstNullForStruct()
         {
-            IEqualityComparer comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(null, 5));
         }
@@ -169,7 +169,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedGetHashCodeTest()
         {
-            IEqualityComparer comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = ReferenceEqualityComparer.Instance;
             Test a = new Test();
 
             Assert.AreEqual(a.GetHashCode(), comparer.GetHashCode(a));
@@ -178,7 +178,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedGetHashCodeTestForStruct()
         {
-            IEqualityComparer comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = ReferenceEqualityComparer.Instance;
             const int Value = 5;
 
             Assert.AreEqual(Value.GetHashCode(), comparer.GetHashCode(Value));
@@ -187,7 +187,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedIsEqual()
         {
-            IEqualityComparer comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = ReferenceEqualityComparer.Instance;
             Test a = new Test();
 
             Assert.IsTrue(comparer.Equals(a, a));
@@ -196,7 +196,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedIsNotEqual()
         {
-            IEqualityComparer comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(new Test(), new Test()));
         }
@@ -204,7 +204,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedIsNotEqualForStruct()
         {
-            IEqualityComparer comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(5, 5));
         }
@@ -212,7 +212,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedSecondNull()
         {
-            IEqualityComparer comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(new Test(), null));
         }
@@ -220,7 +220,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedSecondNullForStruct()
         {
-            IEqualityComparer comparer = ReferenceEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = ReferenceEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(5, null));
         }

@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SymmetricEqualsEqualityComparerTests.cs" company="MorseCode Software">
+// <copyright file="SymmetricEqualityComparerTests.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -39,12 +39,12 @@ namespace MorseCode.FrameworkExtensions.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class SymmetricEqualsEqualityComparerTests
+    public class SymmetricEqualityComparerTests
     {
         [Test]
         public void IsEqual()
         {
-            IEqualityComparer<Base> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<Base> comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsTrue(comparer.Equals(new A(), new A()));
         }
@@ -52,7 +52,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void IsNotEqual()
         {
-            IEqualityComparer<Base> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<Base> comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(new A(), new B()));
         }
@@ -60,7 +60,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void FirstNull()
         {
-            IEqualityComparer<Base> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<Base> comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(null, new A()));
         }
@@ -68,7 +68,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void SecondNull()
         {
-            IEqualityComparer<Base> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<Base> comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(new A(), null));
         }
@@ -76,7 +76,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void BothNull()
         {
-            IEqualityComparer<Base> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<Base> comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsTrue(comparer.Equals(null, null));
         }
@@ -84,7 +84,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GetHashCodeTest()
         {
-            IEqualityComparer<Base> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<Base> comparer = SymmetricEqualityComparer.Instance;
             A a = new A();
 
             Assert.AreEqual(a.GetHashCode(), comparer.GetHashCode(a));
@@ -93,7 +93,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GetHashCodeWithNull()
         {
-            IEqualityComparer<Base> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<Base> comparer = SymmetricEqualityComparer.Instance;
 
             Assert.AreEqual(0, comparer.GetHashCode(null));
         }
@@ -101,7 +101,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void IsEqualForStruct()
         {
-            IEqualityComparer<object> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<object> comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsTrue(comparer.Equals(5, 5));
         }
@@ -109,7 +109,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void IsNotEqualForStruct()
         {
-            IEqualityComparer<object> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<object> comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(5, 7));
         }
@@ -117,7 +117,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void FirstNullForStruct()
         {
-            IEqualityComparer<object> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<object> comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(null, 5));
         }
@@ -125,7 +125,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void SecondNullForStruct()
         {
-            IEqualityComparer<object> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<object> comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(5, null));
         }
@@ -133,7 +133,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GetHashCodeTestForStruct()
         {
-            IEqualityComparer<object> comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer<object> comparer = SymmetricEqualityComparer.Instance;
             const int Value = 5;
 
             Assert.AreEqual(Value.GetHashCode(), comparer.GetHashCode(Value));
@@ -142,7 +142,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedIsEqual()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsTrue(comparer.Equals(new A(), new A()));
         }
@@ -150,7 +150,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedIsNotEqual()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(new A(), new B()));
         }
@@ -158,7 +158,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedFirstNull()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(null, new A()));
         }
@@ -166,7 +166,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedSecondNull()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(new A(), null));
         }
@@ -174,7 +174,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedBothNull()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsTrue(comparer.Equals(null, null));
         }
@@ -182,7 +182,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedGetHashCodeTest()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer.Instance;
             A a = new A();
 
             Assert.AreEqual(a.GetHashCode(), comparer.GetHashCode(a));
@@ -191,7 +191,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedIsEqualForStruct()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsTrue(comparer.Equals(5, 5));
         }
@@ -199,7 +199,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedIsNotEqualForStruct()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(5, 7));
         }
@@ -207,7 +207,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedFirstNullForStruct()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(null, 5));
         }
@@ -215,7 +215,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedSecondNullForStruct()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer.Instance;
 
             Assert.IsFalse(comparer.Equals(5, null));
         }
@@ -223,7 +223,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void UntypedGetHashCodeTestForStruct()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer.Instance;
             const int Value = 5;
 
             Assert.AreEqual(Value.GetHashCode(), comparer.GetHashCode(Value));
@@ -232,7 +232,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GenericIsEqual()
         {
-            IEqualityComparer<int> comparer = SymmetricEqualsEqualityComparer<int>.Instance;
+            IEqualityComparer<int> comparer = SymmetricEqualityComparer<int>.Instance;
 
             Assert.IsTrue(comparer.Equals(5, 5));
         }
@@ -240,7 +240,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GenericIsNotEqual()
         {
-            IEqualityComparer<int> comparer = SymmetricEqualsEqualityComparer<int>.Instance;
+            IEqualityComparer<int> comparer = SymmetricEqualityComparer<int>.Instance;
 
             Assert.IsFalse(comparer.Equals(5, 7));
         }
@@ -248,7 +248,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GenericGetHashCodeTest()
         {
-            IEqualityComparer<int> comparer = SymmetricEqualsEqualityComparer<int>.Instance;
+            IEqualityComparer<int> comparer = SymmetricEqualityComparer<int>.Instance;
             const int Value = 5;
 
             Assert.AreEqual(Value.GetHashCode(), comparer.GetHashCode(Value));
@@ -257,7 +257,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GenericUntypedIsEqual()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer<int>.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer<int>.Instance;
 
             Assert.IsTrue(comparer.Equals(5, 5));
         }
@@ -265,7 +265,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GenericUntypedIsNotEqual()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer<int>.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer<int>.Instance;
 
             Assert.IsFalse(comparer.Equals(5, 7));
         }
@@ -273,7 +273,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GenericUntypedWrongTypeIsEqual()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer<int>.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer<int>.Instance;
 
             Assert.IsTrue(comparer.Equals("test", "test"));
         }
@@ -281,7 +281,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GenericUntypedWrongTypeIsNotEqual()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer<int>.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer<int>.Instance;
 
             Assert.IsFalse(comparer.Equals("test", "test 2"));
         }
@@ -289,7 +289,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GenericUntypedGetHashCodeTest()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer<int>.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer<int>.Instance;
             const int Value = 5;
 
             Assert.AreEqual(Value.GetHashCode(), comparer.GetHashCode(Value));
@@ -298,7 +298,7 @@ namespace MorseCode.FrameworkExtensions.Tests
         [Test]
         public void GenericUntypedGetHashCodeWrongType()
         {
-            IEqualityComparer comparer = SymmetricEqualsEqualityComparer<int>.Instance;
+            IEqualityComparer comparer = SymmetricEqualityComparer<int>.Instance;
 
             ArgumentException actual = null;
 
@@ -322,7 +322,11 @@ namespace MorseCode.FrameworkExtensions.Tests
         {
             #region Public Properties
 
+            // ReSharper disable MemberCanBePrivate.Local
+            // ReSharper disable UnusedAutoPropertyAccessor.Local
             public int Value { get; set; }
+            // ReSharper restore UnusedAutoPropertyAccessor.Local
+            // ReSharper restore MemberCanBePrivate.Local
 
             #endregion
 
@@ -351,7 +355,9 @@ namespace MorseCode.FrameworkExtensions.Tests
 
             #region Methods
 
+            // ReSharper disable UnusedMember.Local
             protected bool Equals(A other)
+            // ReSharper restore UnusedMember.Local
             {
                 return base.Equals(other) && this.Value == other.Value;
             }
@@ -367,7 +373,11 @@ namespace MorseCode.FrameworkExtensions.Tests
         {
             #region Public Properties
 
+            // ReSharper disable MemberCanBePrivate.Local
+            // ReSharper disable UnusedAutoPropertyAccessor.Local
             public int BaseValue { get; set; }
+            // ReSharper restore UnusedAutoPropertyAccessor.Local
+            // ReSharper restore MemberCanBePrivate.Local
 
             #endregion
 
