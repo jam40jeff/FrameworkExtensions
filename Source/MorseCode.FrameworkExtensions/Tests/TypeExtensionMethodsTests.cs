@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NotNullMutable{T}.cs" company="MorseCode Software">
+// <copyright file="TypeExtensionMethodsTests.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -30,67 +30,50 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
-namespace MorseCode.FrameworkExtensions
+namespace MorseCode.FrameworkExtensions.Tests
 {
     using System;
-    using System.Diagnostics.Contracts;
 
-    internal struct NotNullMutable<T> : INotNullMutable<T>
+    using NUnit.Framework;
+
+    [TestFixture]
+    public class TypeExtensionMethodsTests
     {
-        #region Fields
-
-        private T value;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public NotNullMutable(T value)
+        [Test]
+        public void GetDefaultValueForReferenceType()
         {
-            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
+            object result = typeof(string).GetDefaultValue();
 
-            this.value = value;
+            Assert.IsNull(result);
+            // ReSharper disable ExpressionIsAlwaysNull
+            Assert.AreEqual(default(string), result);
+            // ReSharper restore ExpressionIsAlwaysNull
         }
 
-        #endregion
-
-        #region Public Properties
-
-        T INotNull<T>.Value
+        [Test]
+        public void GetDefaultValueForValueType()
         {
-            get
-            {
-                if (ReferenceEquals(this.value, null))
-                {
-                    throw new InvalidOperationException("NotNull instances must be initialized with the constructor taking a non-null value.");
-                }
+            object result = typeof(int).GetDefaultValue();
 
-                return this.value;
+            Assert.IsNotNull(result);
+            Assert.AreEqual(default(int), result);
+        }
+
+        [Test]
+        public void GetDefaultValueForNullType()
+        {
+            ArgumentNullException actual = null;
+            try
+            {
+                ((Type)null).GetDefaultValue();
             }
-        }
-
-        T INotNullMutable<T>.Value
-        {
-            get
+            catch (ArgumentNullException e)
             {
-                return this.ImplicitlyConvert<INotNull<T>>().Value;
+                actual = e;
             }
 
-            set
-            {
-                this.value = value;
-            }
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("type", actual.ParamName);
         }
-
-        #endregion
-
-        #region Public Methods and Operators
-
-        public override string ToString()
-        {
-            return this.ImplicitlyConvert<INotNull<T>>().Value.SafeToString() ?? string.Empty;
-        }
-
-        #endregion
     }
 }

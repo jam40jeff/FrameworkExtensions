@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NotNullMutable{T}.cs" company="MorseCode Software">
+// <copyright file="LazyExtensionMethodsTests.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -30,67 +30,60 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
-namespace MorseCode.FrameworkExtensions
+namespace MorseCode.FrameworkExtensions.Tests
 {
     using System;
-    using System.Diagnostics.Contracts;
 
-    internal struct NotNullMutable<T> : INotNullMutable<T>
+    using NUnit.Framework;
+
+    [TestFixture]
+    public class LazyExtensionMethodsTests
     {
-        #region Fields
-
-        private T value;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public NotNullMutable(T value)
+        [Test]
+        public void EnsureValue()
         {
-            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
+            Lazy<int> lazy = new Lazy<int>(() => 5);
+            lazy.EnsureValue();
 
-            this.value = value;
+            Assert.IsTrue(lazy.IsValueCreated);
         }
 
-        #endregion
-
-        #region Public Properties
-
-        T INotNull<T>.Value
+        [Test]
+        public void EnsureValueThrowsException()
         {
-            get
-            {
-                if (ReferenceEquals(this.value, null))
-                {
-                    throw new InvalidOperationException("NotNull instances must be initialized with the constructor taking a non-null value.");
-                }
+            const string ExpectedMessage = "expected exception message";
 
-                return this.value;
+            Lazy<int> lazy = new Lazy<int>(() => { throw new Exception(ExpectedMessage); });
+
+            Exception actual = null;
+            try
+            {
+                lazy.EnsureValue();
             }
-        }
-
-        T INotNullMutable<T>.Value
-        {
-            get
+            catch (Exception e)
             {
-                return this.ImplicitlyConvert<INotNull<T>>().Value;
+                actual = e;
             }
 
-            set
-            {
-                this.value = value;
-            }
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(ExpectedMessage, actual.Message);
         }
 
-        #endregion
-
-        #region Public Methods and Operators
-
-        public override string ToString()
+        [Test]
+        public void EnsureValueForNull()
         {
-            return this.ImplicitlyConvert<INotNull<T>>().Value.SafeToString() ?? string.Empty;
-        }
+            ArgumentNullException actual = null;
+            try
+            {
+                ((Lazy<int>)null).EnsureValue();
+            }
+            catch (ArgumentNullException e)
+            {
+                actual = e;
+            }
 
-        #endregion
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("lazy", actual.ParamName);
+        }
     }
 }

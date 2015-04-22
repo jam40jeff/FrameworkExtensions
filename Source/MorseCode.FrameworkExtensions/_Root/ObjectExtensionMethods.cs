@@ -47,7 +47,7 @@ namespace MorseCode.FrameworkExtensions
         /// <param name="o">The object to convert.</param>
         /// <typeparam name="T">The type to which to convert.</typeparam>
         /// <returns>The object as type <typeparamref name="T"/>.</returns>
-        public static T ImplicitConvert<T>(this T o)
+        public static T ImplicitlyConvert<T>(this T o)
         {
             Contract.Ensures(ReferenceEquals(o, null) || !ReferenceEquals(Contract.Result<T>(), null));
 
@@ -66,6 +66,24 @@ namespace MorseCode.FrameworkExtensions
         public static string SafeToString(this object o)
         {
             return o == null ? null : o.ToString();
+        }
+
+        /// <summary>
+        /// Compares two objects for symmetric equality, where two non-null objects are equal if and only if
+        /// <c>a.Equals(b)</c> and <c>b.Equals(a)</c>.
+        /// </summary>
+        /// <param name="x">
+        /// The first object to compare.
+        /// </param>
+        /// <param name="y">
+        /// The second object to compare.
+        /// </param>
+        /// <returns>
+        /// Whether or not <paramref name="x"/> and <paramref name="y"/> are symmetrically equal.
+        /// </returns>
+        public static bool SymmetricEquals(this object x, object y)
+        {
+            return ReferenceEquals(x, y) || (x != null && y != null && x.Equals(y) && y.Equals(x));
         }
 
         #endregion

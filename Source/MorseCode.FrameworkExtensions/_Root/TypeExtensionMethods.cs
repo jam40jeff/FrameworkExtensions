@@ -1,7 +1,7 @@
 ﻿#region License
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NotNullMutable{T}.cs" company="MorseCode Software">
+// <copyright file="TypeExtensionMethods.cs" company="MorseCode Software">
 // Copyright (c) 2015 MorseCode Software
 // </copyright>
 // <summary>
@@ -35,60 +35,27 @@ namespace MorseCode.FrameworkExtensions
     using System;
     using System.Diagnostics.Contracts;
 
-    internal struct NotNullMutable<T> : INotNullMutable<T>
+    /// <summary>
+    /// Extension methods for use with types.
+    /// </summary>
+    public static class TypeExtensionMethods
     {
-        #region Fields
-
-        private T value;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public NotNullMutable(T value)
-        {
-            Contract.Requires<ArgumentNullException>(!ReferenceEquals(value, null), "value");
-
-            this.value = value;
-        }
-
-        #endregion
-
-        #region Public Properties
-
-        T INotNull<T>.Value
-        {
-            get
-            {
-                if (ReferenceEquals(this.value, null))
-                {
-                    throw new InvalidOperationException("NotNull instances must be initialized with the constructor taking a non-null value.");
-                }
-
-                return this.value;
-            }
-        }
-
-        T INotNullMutable<T>.Value
-        {
-            get
-            {
-                return this.ImplicitlyConvert<INotNull<T>>().Value;
-            }
-
-            set
-            {
-                this.value = value;
-            }
-        }
-
-        #endregion
-
         #region Public Methods and Operators
 
-        public override string ToString()
+        /// <summary>
+        /// Gets the default value for the specified type.
+        /// </summary>
+        /// <param name="type">
+        /// The type to get the default value for.
+        /// </param>
+        /// <returns>
+        /// The default value for type <paramref name="type"/>.
+        /// </returns>
+        public static object GetDefaultValue(this Type type)
         {
-            return this.ImplicitlyConvert<INotNull<T>>().Value.SafeToString() ?? string.Empty;
+            Contract.Requires<ArgumentNullException>(type != null, "type");
+
+            return type.IsValueType ? Activator.CreateInstance(type) : null;
         }
 
         #endregion

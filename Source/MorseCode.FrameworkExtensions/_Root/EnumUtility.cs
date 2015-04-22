@@ -52,8 +52,9 @@ namespace MorseCode.FrameworkExtensions
         /// A typed array that contains the values of the constants in <typeparamref name="T"/>.
         /// </returns>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.</exception>
-        public static T[] GetValues<T>() where T : struct
+        public static T[] GetValues<T>() where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
             Contract.Ensures(Contract.Result<T[]>() != null);
 
             return (T[])Enum.GetValues(typeof(T));
@@ -73,8 +74,9 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.-or- <paramref name="value"/> is either an empty string or only contains white space.-or- <paramref name="value"/> is a name, but not one of the named constants defined for the enumeration.</exception>
         /// <exception cref="T:System.OverflowException"><paramref name="value"/> is outside the range of the underlying type of <typeparamref name="T"/>.</exception>
-        public static T Parse<T>(string value) where T : struct
+        public static T Parse<T>(string value) where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
             Contract.Requires<ArgumentNullException>(value != null, "value");
 
             return (T)Enum.Parse(typeof(T), value);
@@ -98,8 +100,9 @@ namespace MorseCode.FrameworkExtensions
         /// </returns>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.-or- <paramref name="value"/> is either an empty string or only contains white space.-or- <paramref name="value"/> is a name, but not one of the named constants defined for the enumeration.</exception>
         /// <exception cref="T:System.OverflowException"><paramref name="value"/> is outside the range of the underlying type of <typeparamref name="T"/>.</exception>
-        public static T Parse<T>(string value, bool ignoreCase) where T : struct
+        public static T Parse<T>(string value, bool ignoreCase) where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
             Contract.Requires<ArgumentNullException>(value != null, "value");
 
             return (T)Enum.Parse(typeof(T), value, ignoreCase);
@@ -118,8 +121,10 @@ namespace MorseCode.FrameworkExtensions
         /// An instance of the enumeration set to <paramref name="value"/>.
         /// </returns>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.</exception>
-        public static T ToObject<T>(byte value) where T : struct
+        public static T ToObject<T>(byte value) where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
+
             return (T)Enum.ToObject(typeof(T), value);
         }
 
@@ -136,8 +141,10 @@ namespace MorseCode.FrameworkExtensions
         /// An instance of the enumeration set to <paramref name="value"/>.
         /// </returns>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.</exception>
-        public static T ToObject<T>(int value) where T : struct
+        public static T ToObject<T>(int value) where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
+
             return (T)Enum.ToObject(typeof(T), value);
         }
 
@@ -154,8 +161,10 @@ namespace MorseCode.FrameworkExtensions
         /// An instance of the enumeration set to <paramref name="value"/>.
         /// </returns>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.</exception>
-        public static T ToObject<T>(long value) where T : struct
+        public static T ToObject<T>(long value) where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
+
             return (T)Enum.ToObject(typeof(T), value);
         }
 
@@ -175,8 +184,10 @@ namespace MorseCode.FrameworkExtensions
         /// <typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.-or- <paramref name="value"/> is not type <see cref="T:System.SByte"/>, <see cref="T:System.Int16"/>, <see cref="T:System.Int32"/>,
         /// <see cref="T:System.Int64"/>, <see cref="T:System.Byte"/>, <see cref="T:System.UInt16"/>, <see cref="T:System.UInt32"/>, or <see cref="T:System.UInt64"/>.
         /// </exception>
-        public static T ToObject<T>(object value) where T : struct
+        public static T ToObject<T>(object value) where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
+
             return (T)Enum.ToObject(typeof(T), value);
         }
 
@@ -193,8 +204,10 @@ namespace MorseCode.FrameworkExtensions
         /// An instance of the enumeration set to <paramref name="value"/>.
         /// </returns>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.</exception>
-        public static T ToObject<T>(sbyte value) where T : struct
+        public static T ToObject<T>(sbyte value) where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
+
             object returnValue = Enum.ToObject(typeof(T), value);
             Contract.Assume(returnValue != null);
             return (T)returnValue;
@@ -213,8 +226,10 @@ namespace MorseCode.FrameworkExtensions
         /// An instance of the enumeration set to <paramref name="value"/>.
         /// </returns>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.</exception>
-        public static T ToObject<T>(short value) where T : struct
+        public static T ToObject<T>(short value) where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
+
             return (T)Enum.ToObject(typeof(T), value);
         }
 
@@ -231,8 +246,10 @@ namespace MorseCode.FrameworkExtensions
         /// An instance of the enumeration set to <paramref name="value"/>.
         /// </returns>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.</exception>
-        public static T ToObject<T>(uint value) where T : struct
+        public static T ToObject<T>(uint value) where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
+
             return (T)Enum.ToObject(typeof(T), value);
         }
 
@@ -249,8 +266,10 @@ namespace MorseCode.FrameworkExtensions
         /// An instance of the enumeration set to <paramref name="value"/>.
         /// </returns>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.</exception>
-        public static T ToObject<T>(ulong value) where T : struct
+        public static T ToObject<T>(ulong value) where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
+
             return (T)Enum.ToObject(typeof(T), value);
         }
 
@@ -267,8 +286,10 @@ namespace MorseCode.FrameworkExtensions
         /// An instance of the enumeration set to <paramref name="value"/>.
         /// </returns>
         /// <exception cref="T:System.ArgumentException"><typeparamref name="T"/> is not an <see cref="T:System.Enum"/>.</exception>
-        public static T ToObject<T>(ushort value) where T : struct
+        public static T ToObject<T>(ushort value) where T : struct, IComparable, IFormattable, IConvertible
         {
+            Contract.Requires<InvalidOperationException>(typeof(T).IsEnum, "Type T must be an enum.");
+
             return (T)Enum.ToObject(typeof(T), value);
         }
 

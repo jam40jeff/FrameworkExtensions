@@ -33,6 +33,7 @@
 namespace MorseCode.FrameworkExtensions
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
@@ -49,6 +50,25 @@ namespace MorseCode.FrameworkExtensions
         #endregion
 
         #region Public Methods and Operators
+
+        /// <summary>
+        /// Return the specified collection as a read-only collection by using a wrapper.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection to convert to a read-only collection.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of the elements in <paramref name="collection"/>.
+        /// </typeparam>
+        /// <returns>
+        /// A read-only collection of items in <paramref name="collection"/>.
+        /// </returns>
+        public static IReadOnlyCollection<T> AsReadOnly<T>(this ICollection<T> collection)
+        {
+            Contract.Ensures((Contract.Result<IReadOnlyCollection<T>>() == null) == (collection == null));
+
+            return collection == null ? null : new ReadOnlyCollectionWrapper<T>(collection);
+        }
 
         /// <summary>
         /// Sets the contents of the collection to be equal to the contents of the specified enumerable.
@@ -103,5 +123,49 @@ namespace MorseCode.FrameworkExtensions
         }
 
         #endregion
+
+        private sealed class ReadOnlyCollectionWrapper<T> : IReadOnlyCollection<T>
+        {
+            #region Fields
+
+            private readonly ICollection<T> source;
+
+            #endregion
+
+            #region Constructors and Destructors
+
+            public ReadOnlyCollectionWrapper(ICollection<T> source)
+            {
+                this.source = source;
+            }
+
+            #endregion
+
+            #region Explicit Interface Properties
+
+            int IReadOnlyCollection<T>.Count
+            {
+                get
+                {
+                    return this.source.Count;
+                }
+            }
+
+            #endregion
+
+            #region Explicit Interface Methods
+
+            IEnumerator<T> IEnumerable<T>.GetEnumerator()
+            {
+                return this.source.GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return this.ImplicitlyConvert<IEnumerable<T>>().GetEnumerator();
+            }
+
+            #endregion
+        }
     }
 }
